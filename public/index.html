@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>CSE312 Sample Front End</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body onload="welcome();">
+
+<h1>CSE312 Sample Page</h1>
+
+<p id="paragraph">
+    This text is from the HTML file 🙂
+</p>
+
+<p>
+    Here's a flamingo:
+</p>
+
+<img src="image/flamingo.jpg" alt="It's a flamingo" class="my_image"/>
+
+<form action="/image-upload" id="image-form" method="post" enctype="multipart/form-data">
+    <label for="image-form-comment">Comment: </label>
+    <textarea id="image-form-comment" name="comment" cols="40" rows="6"></textarea>
+    <br/>
+    <label for="form-file">Image: </label>
+    <input id="form-file" type="file" name="upload">
+    <input type="submit" value="Post">
+ </form>
+
+<script src="functions.js"></script>
+</body>
+</html>
