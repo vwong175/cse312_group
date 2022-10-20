@@ -1,4 +1,4 @@
-import dynamicServer
+#import dynamicServer
 
 
 def response(request,isMulti):
