@@ -1,7 +1,7 @@
-#import dynamicServer
+# import dynamicServer
 
 
-def response(request,isMulti):
+def response(request, isMulti):
     requestType = request[:4]
     result = b''
     if 'GET' in requestType:
