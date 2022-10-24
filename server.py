@@ -104,6 +104,7 @@ class TCP_Handler(socketserver.BaseRequestHandler):
         # print(content.decode('utf-8') + " len:" + str(len(content)))
         firstReceive = splitHeaders(content)
         header = firstReceive[0]
+
         rest = firstReceive[1]
         # print(len(rest))
 

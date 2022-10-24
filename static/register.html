@@ -5,11 +5,10 @@
 </head>
 <body onload="welcome();">
 
-<h1>Rock Paper Scissors:
-    Login
+<h1>Create Your Username And Password
 </h1>
 
-<form action="/Login-path" method="post" enctype="multipart/form-data">
+<form action="/form-path" method="post" enctype="multipart/form-data">
 <div>
     <label for="username">Username:</label>
     <input type="text" id="username" name="username">
@@ -20,13 +19,9 @@
     <input type="password" id="pass" name="password" minlength="8" required>
 </div>
 
-<input type="submit" value="Login">
+<input type="submit" value="Create">
 </form>
 
-<form action="/register-path" method="get">
-
-    <input type="submit" value="Register">
-</form>
 <script src="functions.js"></script>
 </body>
 </html>

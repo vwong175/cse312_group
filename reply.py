@@ -7,7 +7,7 @@ def response(request, isMulti):
     if 'GET' in requestType:
         result = dealGet(request)
     elif 'POST' in requestType:
-        result = dealPost(request,isMulti)
+        result = dealPost(request, isMulti)
     else:
         result = dealOthers
 
@@ -25,10 +25,12 @@ def simplyCheck(request):
     str2 = 'GET /style.css HTTP/1.1'
     str3 = 'GET /functions.js HTTP/1.1'
     str4 = '/image'
+    str5 = 'GET /register-path? HTTP/1.1'
 
     htmlFile = open('./static/index.html','rb').read()
     cssFile = open('./static/style.css','rb').read()
     jsFile = open('./static/functions.js','rb').read()
+    registerFile = open('./static/register.html','rb').read()
     image = './static'
 
     result = b''
@@ -47,6 +49,8 @@ def simplyCheck(request):
             newline = (request.replace(' HTTP/1.1','')+'.jpg')[4:]
         pic = open(image + newline,'rb').read()
         result = rOK(len(pic),pic,"image/jpeg")
+    elif str5 in request:
+        result = rOK(len(registerFile),registerFile,"text/html")
     else:
         result = r404()
 
