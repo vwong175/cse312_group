@@ -12,6 +12,7 @@ import random
 mongoClient = MongoClient("mongo")
 db = mongoClient["GroupProject"]
 commentHistory = db["users"]
+
 currentId = db["Ids"]
 xsrfTokens = db["tokens"]
 
@@ -101,6 +102,7 @@ class TCP_Handler(socketserver.BaseRequestHandler):
 
     def handle(self):
         content = self.request.recv(2048)
+        print(content)
         # print(content.decode('utf-8') + " len:" + str(len(content)))
         firstReceive = splitHeaders(content)
         header = firstReceive[0]
@@ -110,7 +112,7 @@ class TCP_Handler(socketserver.BaseRequestHandler):
 
         infoFromHeader = receiveHeaderInfo(header)
         request = infoFromHeader[0]
-        # print(request)
+        print(request)
         length = infoFromHeader[1]
         # print(length)
         boundary = infoFromHeader[2].encode('utf-8')
