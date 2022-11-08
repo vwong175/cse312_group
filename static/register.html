@@ -1,27 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Front End</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
 </head>
-<body onload="welcome();">
+<body>
+    <div class="form-div">
+            <h2>Register: </h2>
 
-<h1>Create Your Username And Password
-</h1>
+            <form action="{{ url_for('user_register') }}", method="POST">
+                    <input type="text", name="username", placeholder="Username", required, class="form-field">
+                    <br><br>
+                    <input type="password", name="password", placeholder="Password", required, class="form-field">
+                    <br><br>
+                    <input type="password", name="password", placeholder="Confirm Password", required, class="form-field">
+                    <br><br>
+                    <input type="submit" value="Submit" style="float: left;">
+            </form>
 
-<form action="/form-path" method="post" enctype="multipart/form-data">
-<div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
-</div>
-
-<div>
-    <label for="pass">Password (8 characters minimum):</label>
-    <input type="password" id="pass" name="password" minlength="8" required>
-</div>
-
-<input type="submit" value="Create">
-</form>
-
-<script src="functions.js"></script>
+    </div>
+    
 </body>
 </html>
