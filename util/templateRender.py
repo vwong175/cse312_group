@@ -1,7 +1,6 @@
 
 
 def htmlRender(filename, data):
-
     with open(filename) as html_file:
         template = html_file.read()
         template = replacePlaceholders(template, data)

@@ -1,23 +1,9 @@
 import socketserver
-
-from pymongo import MongoClient
-
-from templateRender import htmlRender
-
-import reply
-
+from util.templateRender import htmlRender
+import util.reply as reply
 import string
 import random
 
-mongoClient = MongoClient("mongo")
-db = mongoClient["GroupProject"]
-commentHistory = db["users"]
-
-currentId = db["Ids"]
-xsrfTokens = db["tokens"]
-
-# commentHistory.delete_many({})
-# currentId.delete_many({})
 
 currentId.insert_one({'lastId':0})
 

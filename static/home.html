@@ -1,0 +1,54 @@
+<!-- Redirect to this page when the user successfully logins -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Rock, Paper, Scissors</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body onload="welcome();">
+    <div class="Header">
+      <h1> Rock Paper Scissors </h1>
+      <br>
+      <button id="restart" class="Restart-btn" onClick="restartGame()"> Restart Game </button>
+    </div>
+
+    <div class="Score">
+      <h3> The score </h3>
+      <br>
+      <span id="user-score"> 0 </span> : <span id="comp-score"> 0 </span>
+      <p> user : comp </p>
+    </div>
+  
+    <p> Make your move user </p>
+
+    <div class="Choices">
+      <div class="choice" id="r">
+        <img src="images/rock.png" alt="rock">
+      </div>
+      
+      <div class="choice" id="p">
+        <img src="images/paper.png" alt="paper">
+      </div>
+
+      <div class="choice" id="s">
+        <img src="images/scissor.png" alt="scissor">
+      </div>
+    </div>
+
+    <div class ="Result">
+      <p id="resultMessage"> Click any of the three emojis to start playing </p>
+    </div>
+
+    <div class = "Instructions">
+      <p> Hello, rock, paper, scissors is a game of luck where you will be playing against another person, and both of you have to make a choice between rock, paper, or scissors at the same time. In this case, you will be playing against the computer. <b> Rock beats scissors, scissors beats paper, and paper beats rock.</b> </p>
+    </div>
+  
+  
+    <script src="functions.js"></script>
+  </body>
+
+</html>
