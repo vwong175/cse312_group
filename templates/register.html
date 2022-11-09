@@ -10,12 +10,12 @@
     <div class="form-div">
             <h2>Register: </h2>
 
-            <form action="{{ url_for('user_register') }}", method="POST">
+            <form action="{{ url_for('login_page') }}", method="POST">
                     <input type="text", name="username", placeholder="Username", required, class="form-field">
                     <br><br>
                     <input type="password", name="password", placeholder="Password", required, class="form-field">
                     <br><br>
-                    <input type="password", name="password", placeholder="Confirm Password", required, class="form-field">
+                    <input type="password", name="confirm_password", placeholder="Confirm Password", required, class="form-field">
                     <br><br>
                     <input type="submit" value="Submit" style="float: left;">
             </form>

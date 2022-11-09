@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from flask_pymongo import MongoClient
 
 mongoClient = MongoClient("mongo")
 db = mongoClient["GroupProject"]
