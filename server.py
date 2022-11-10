@@ -1,22 +1,44 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import MongoClient #I think this is correct?
 from flask_login import LoginManager
 
+from pymongo import MongoClient
+
 app = Flask(__name__)
+
 client = MongoClient('mongo') #Connect to the hostname 'mongo' as defined in the docker compose file
-db = client['r_p_s']    #Select the database
+db = client["userInfo"]
+users = db["users"]
+# rank in {"username",rank#} format
+rank = db["rank"]
 
 
-#Collections
-users = db['users']
+import routes
 
-@app.route('/', methods=["GET"])
+# root: login page
+@app.route('/')
 def login_page():
-    return render_template('register.html')
+    return render_template('index.html')
 
-@app.route('/home', methods=["GET"])
+# game page
+@app.route('/home/')
 def home_page():
     return render_template('home.html')
+
+# signup page
+@app.route('/signup/')
+def signup_page():
+    return render_template('register.html')
+
+# profile page
+@app.route('/profile/<username>')
+def profile_page(username):
+    return render_template('profile.html')
+
+# leaderboard page
+@app.route('/leaderboard/')
+def leaderboard_page():
+    return render_template('leaderboard.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True) #keep as 8080?

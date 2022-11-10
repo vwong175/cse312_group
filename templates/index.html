@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Front End</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css"/>
 </head>
 <body onload="welcome();">
 
@@ -9,7 +9,7 @@
     Login
 </h1>
 
-<form action="/Login-path" method="post" enctype="multipart/form-data">
+<form action="/login" method="post" enctype="multipart/form-data">
 <div>
     <label for="username">Username:</label>
     <input type="text" id="username" name="username">
@@ -23,10 +23,10 @@
 <input type="submit" value="Login">
 </form>
 
-<form action="/register-path" method="get">
+<form action="/signup" method="get">
     <input type="submit" value="Register">
 </form>
 
-<script src="functions.js"></script>
+<script src="static/functions.js"></script>
 </body>
 </html>
