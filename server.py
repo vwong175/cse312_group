@@ -1,12 +1,13 @@
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, jsonify
 from flask_pymongo import MongoClient #I think this is correct?
 from flask_login import LoginManager
 
 from pymongo import MongoClient
 
 app = Flask(__name__)
+app.secret_key = b'cse312 group project secret key'
 
-client = MongoClient('mongo') #Connect to the hostname 'mongo' as defined in the docker compose file
+client = MongoClient('localhost',27017) #Connect to the hostname 'mongo' as defined in the docker compose file
 db = client["userInfo"]
 users = db["users"]
 # rank in {"username",rank#} format
@@ -31,13 +32,17 @@ def signup_page():
     return render_template('register.html')
 
 # profile page
-@app.route('/profile/<username>')
-def profile_page(username):
-    return render_template('profile.html')
+@app.route('/profile/<userid>',methods=['GET'])
+def profile_page(userid):
+    if session.get("userid")!= userid:
+        return jsonify({"failed": "Login first."}), 401
+    user = users.find_one({"_id": userid})
+    return render_template('profile.html',user=user)
 
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
+    board = list(rank.find())
     return render_template('leaderboard.html')
 
 if __name__ == "__main__":

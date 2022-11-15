@@ -6,10 +6,18 @@
 </head>
 <body>
     <h1> Welcome back {{ user.username }} !</h1>
-    <div> Here is some information about yourself: </div>
-    <div> Played games: {{ user.played }}</div>
-    <div> Won games: {{ user.wins }}</div>
-    <div> Current rank: {{ rank }}</div>
+    <div> Here is some information about yourself. </div>
+    <div>&nbsp&nbspPlayed games: {{ user.played }}</div>
+    <div>&nbsp&nbspWon games: {{ user.wins }}</div>
+    <div>&nbsp&nbspCurrent rank: {{ rank }}</div>
+
+    <form action="/profile/signout" method="get">
+    <input type="submit" value="Sign out">
+    </form>
+
+    <form action="/leaderboard/" method="get">
+    <input type="submit" value="Check leader board">
+    </form>
 --------------------------------------------
 left unfinished
 
