@@ -14,7 +14,7 @@ users = db['users']
 def redirect_page():
     return redirect(url_for('register_page'))
 
-@app.route('/login', methods=["GET"])
+@app.route('/login', methods=["GET","POST"])
 def login_page():
     return render_template('login.html')
 

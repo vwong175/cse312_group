@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Rock, Paper, Scissors</title>
-    <!-- <link href="./style.css" rel="stylesheet" type="text/css" /> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
   </head>
 
   <body onload="welcome();">
@@ -12,6 +12,12 @@
       <h1> Rock Paper Scissors </h1>
       <br>
     </div>
+
+    <ul>
+      <li><a href="{{url_for('leaderboard_page')}}">Leaderboard</a></li>
+      <li><a href="{{url_for('profile_page')}}">Profile</a></li>
+      <li><a href="{{url_for('home_page')}}">Home</a></li>
+    </ul>
 
     <h1> Welcome back {{ user.username }} !</h1>
     <div> Here is some information about yourself. </div>
