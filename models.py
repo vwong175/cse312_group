@@ -36,6 +36,7 @@ class User:
         if users.insert_one(user):
             id = user["_id"]
             print(list(users.find()))
+            self.start_session(user)
             return redirect('/profile/'+id)
 
         return jsonify({"failed": "Signup failed"}), 400
