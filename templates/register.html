@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+</head>
+<body>
+    <div class="form-div">
+            <h2>Register: </h2>
+
+            <form action="{{ url_for('signup') }}", method="POST">
+                    <input type="text", name="username", placeholder="Username", required, class="form-field">
+                    <br><br>
+                    <input type="text", name="email", placeholder="Email Address", required, class="form-field">
+                    <br><br>
+                    <input type="password", name="password", placeholder="Password", required, class="form-field">
+                    <br><br>
+                    <input type="password", name="confirm_password", placeholder="Confirm Password", required, class="form-field">
+                    <br><br>
+                    <input type="submit" value="Submit" style="float: left;">
+            </form>
+
+    </div>
+    
+</body>
+</html>
