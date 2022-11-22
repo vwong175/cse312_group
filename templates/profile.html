@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Rock, Paper, Scissors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+  </head>
+
+  <body onload="welcome();">
+    <div class="Header">
+      <h1> Rock Paper Scissors </h1>
+      <br>
+    </div>
+
+    <ul>
+      <li><a href="{{url_for('leaderboard_page')}}">Leaderboard</a></li>
+      <li><a href="{{url_for('profile_page')}}">Profile</a></li>
+      <li><a href="{{url_for('home_page')}}">Home</a></li>
+    </ul>
+
+    <h1> Welcome back {{ user.username }} !</h1>
+    <div> Here is some information about yourself. </div>
+    <div>&nbsp&nbspPlayed games: {{ user.played }}</div>
+    <div>&nbsp&nbspWon games: {{ user.wins }}</div>
+    <div>&nbsp&nbspCurrent rank: {{ rank }}</div>
+
+    <form action="/profile/signout" method="get">
+    <input type="submit" value="Sign out">
+    </form>
+
+    <form action="{{url_for('leaderboard_page') }}" method="get">
+    <input type="submit" value="Check leader board">
+    </form>
+  
+    <!--<script src="{{ url_for('static', filename='functions.js') }}"></script>-->
+  </body>
+
+</html>
