@@ -3,4 +3,5 @@ flask
 flask-sock
 flask-socketio
 flask-pymongo
+flask-login
 bcrypt

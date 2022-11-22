@@ -16,10 +16,10 @@ rank = db["rank"]
 
 import routes
 
-# root: login page
+# root: login page -> login.html
 @app.route('/')
 def login_page():
-    return render_template('index.html')
+    return render_template('login.html')
 
 # game page
 @app.route('/home/')
@@ -46,4 +46,4 @@ def leaderboard_page():
     return render_template('leaderboard.html')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True) #keep as 8080?
+    app.run(host="0.0.0.0", port=8081, debug=True) #keep as 8080?
