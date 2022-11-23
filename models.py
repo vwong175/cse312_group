@@ -1,8 +1,13 @@
 import bcrypt
 from flask import Flask, jsonify, request, session, redirect
-from server import users
+from pymongo import MongoClient
+# from server import users
 import uuid
 
+client = MongoClient('localhost', 27017) #Connect to the hostname 'mongo' as defined in the docker compose file
+db = client["userInfo"]
+users = db["users"]
+rank = db["rank"] # rank in {"username", rank#} format
 
 class User:
 
