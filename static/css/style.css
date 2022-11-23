@@ -1,9 +1,5 @@
 /* # is for ids, . is for classes */
 
-h1{
-  color: white
-}
-
 img {
   max-width: 100%;
   max-height: 100%;
@@ -19,23 +15,24 @@ img {
   box-sizing: border-box
 }
 
-body{
+body {
   background-color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
 }
 
-.Header {
+/* Using bootstrap navbar header */
+/* .Header {
   background-color: black;
   text-align: center;
   padding: 20px;
   font-family: Helvetica, sans-serif;
-}
+} */
 
 .Restart-btn {
-  background-color: white;
+  background-color: black;
   border: none;
-  color: black;
+  color: white;
   padding: 6px 12px;
   text-align: center;
   display: inline-block;
@@ -44,7 +41,7 @@ body{
 
 .Restart-btn:hover {
   cursor: pointer;
-  box-shadow: 0 0 15px white;
+  box-shadow: 0 0 20px black;
 }
 
 .choice {
@@ -55,7 +52,7 @@ body{
 .Score {
   margin: 20px auto;
   text-align: center;
-  border: 5px solid white;
+  border: 2px solid black;
   width: 200px;
   font-size: 14pt;
   padding: 20px;

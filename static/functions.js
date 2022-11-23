@@ -1,9 +1,3 @@
-
-
-function welcome() {
-	document.getElementById("paragraph").innerHTML += "<br/>This text was added by JavaScript 😀"
-}
-
 // constants and variables
 let userScore = 0;
 let compScore = 0;
@@ -49,7 +43,6 @@ function lost(userChoice, compChoice){
   resultMessage.innerHTML = `${userChoice} cant beat ${compChoice}. You lost!`;
   compScore++;
 }
-
 
 // When the user chooses rock
 rock_div.addEventListener('click', function(){
