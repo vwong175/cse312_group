@@ -1,43 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Rock, Paper, Scissors</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-  </head>
+{% extends "layout.html" %}
+{% block content %}
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Number of wins</th>
+      </tr>
+    </thead>
 
-  
-  <body>
-    <div class="Header">
-      <h1> Rock Paper Scissors </h1>
-      <br>
-    </div>
-    <ul>
-      <li><a href="{{url_for('leaderboard_page')}}">Leaderboard</a></li>
-      <li><a href="{{url_for('home_page')}}">Home</a></li>
-    </ul>
-
-    <table id="data" class="table table-striped">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Username</th>
-            <th>Number of wins</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for person in boards %}
-            <tr>
-              <td>{{person.rank }}</td>
-              <td>{{person.username }}</td>
-              <td>{{person.wins}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-  
-    <!--<script src="{{ url_for('static', filename='functions.js') }}"></script>-->
-  </body>
-
-</html>
+    <tbody>
+      {% for person in boards %}
+        <tr>
+          <td>{{ person.rank }}</td>
+          <td>{{ person.username }}</td>
+          <td>{{ person.wins }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    
+  </table>
+{% endblock content %}

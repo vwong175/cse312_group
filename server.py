@@ -9,7 +9,7 @@ app.secret_key = b'cse312 group project secret key'
 client = MongoClient('localhost', 27017) #Connect to the hostname 'mongo' as defined in the docker compose file
 db = client["userInfo"]
 users = db["users"]
-# rank in {"username",rank#} format
+# rank in {"username", rank#} format
 rank = db["rank"]
 
 
@@ -51,7 +51,12 @@ def profile_page(userid):
 @app.route('/leaderboard/')
 def leaderboard_page():
     board = list(rank.find())
-    return render_template('leaderboard.html')
+    sample_board = [
+        {"rank": "1", "username": "vwong", "wins": 10},
+        {"rank": "2", "username": "poop", "wins": 2},
+        {"rank": "3", "username": "valerie", "wins": 1}
+    ]
+    return render_template('leaderboard.html', boards=sample_board)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8081, debug=True)
