@@ -1,13 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Leaderboards</title>
-</head>
-<body>
-    <h1>Here is the leaderboard:</h1>
-{% for person in boards %}
-    <div>Rand: {{ person.rank }} |  Username: {{person.username}} |  Win games: {{person.wins}}</div>
-{% endfor %}
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Username</th>
+        <th>Number of wins</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for person in boards %}
+        <tr>
+          <td>{{ person.rank }}</td>
+          <td>{{ person.username }}</td>
+          <td>{{ person.wins }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    
+  </table>
+{% endblock content %}
