@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request, session, redirect, jsonify
 from flask_pymongo import MongoClient
+# from models import User
 
 from pymongo import MongoClient
 
@@ -12,13 +13,23 @@ users = db["users"]
 # rank in {"username", rank#} format
 rank = db["rank"]
 
-
-import routes
-
 # root: login page
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def login_page():
-    return render_template('login.html')
+    if request.method == "GET":
+        return render_template('login.html')
+    else:
+        #TODO
+        return "Need to implement logic for authenticating user"
+
+# signup page
+@app.route('/signup/', methods=["POST", "GET"])
+def signup_page():
+    if request.method == "POST":
+        #TODO: Save the information in the database and display a message that they can log in
+        return redirect(url_for("login_page"))
+    else:
+        return render_template('register.html')
 
 # game page
 @app.route('/home/')
@@ -29,15 +40,6 @@ def home_page():
 @app.route("/about/")
 def about_page():
     return render_template('about.html')
-
-# signup page
-@app.route('/signup/', methods=["POST", "GET"])
-def signup_page():
-    if request.method == "POST":
-        #Save the information in the database and display a message that they can log in
-        return redirect(url_for("login_page"))
-    else:
-        return render_template('register.html')
 
 # profile page
 @app.route('/profile/<userid>', methods=['GET'])
@@ -56,7 +58,7 @@ def leaderboard_page():
         {"rank": "2", "username": "poop", "wins": 2},
         {"rank": "3", "username": "valerie", "wins": 1}
     ]
-    return render_template('leaderboard.html', boards=sample_board)
+    return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
