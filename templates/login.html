@@ -5,13 +5,35 @@
 
 {% block content %}
 <body>
+    <!-- flash messages citation: https://www.youtube.com/watch?v=DFCKWhoiHZ4 -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <h3> {{ message }} </h3>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <form class="form-signin", method="POST">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-        <button class="btn btn-lg btn-dark btn-block" type="submit">Sign in</button>
+
+        {{ form.csrf_token }}
+
+        <!-- <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" name="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""> -->
+
+        {{ form.email.label }}
+        {{ form.email }}
+        
+        <!-- <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="inputPassword" class="form-control" placeholder="Password" required=""> -->
+
+        {{ form.password.label }}
+        {{ form.password }}
+
+        <!-- <button class="btn btn-lg btn-dark btn-block" type="submit">Sign in</button> -->
+        {{ form.submit }}
+
         <p>Not yet registered?<a href="{{ url_for('signup_page') }}" class="link-info">Register now!</a></p>
     </form>
 </body> 

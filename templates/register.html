@@ -7,19 +7,34 @@
     <form class="form-register", method="POST">
         <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
 
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="">
+        {{ form.hidden_tag() }}
 
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+        <!-- <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus=""> -->
+        {{ form.username.label }}
+        {{ form.username }}
 
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+        <!-- <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""> -->
 
-        <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
-        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required="" autofocus="">
+        {{ form.email.label }}
+        {{ form.email }}
+
+        <!-- <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required=""> -->
+
+        {{ form.password.label }}
+        {{ form.password }}
+
+        <!-- <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required="" autofocus=""> -->
+
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password }}
         
-        <button class="btn btn-lg btn-dark btn-block" type="submit">Register</button>
+        <!-- <button class="btn btn-lg btn-dark btn-block" type="submit">Register</button> -->
+        {{ form.submit }}
+
         <p><a href="{{ url_for('login_page') }}" class="link-info">Already have account?</a></p>
       </form>
 </body> 
