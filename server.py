@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for, request, session, redirect, jsonify
+from flask import Flask, render_template, url_for, request, session, redirect, jsonify, flash
 from flask_pymongo import MongoClient
 from models import User
+from forms import *
 # from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -9,21 +10,25 @@ app.secret_key = b'cse312 group project secret key'
 # root: login page
 @app.route('/', methods=["POST", "GET"])
 def login_page():
-    if request.method == "GET":
-        return render_template('login.html')
-    else:
-        #TODO
-        return "Need to implement logic for authenticating user"
+    login_form = LoginForm()
+
+    if login_form.validate_on_submit():
+        return User.login()
+
+    return render_template('login.html', form=login_form)
 
 # # signup page
 @app.route('/signup/', methods=["POST", "GET"])
 def signup_page():
-    if request.method == "POST":
+    registration_form = RegistrationForm()
+
+    if registration_form.validate_on_submit():
         #TODO: Save the information in the database and display a message that they can log in
-        # User().signup()
+        User().signup()
+        flash("You successfully signed up!")
         return redirect(url_for("login_page"))
-    else:
-        return render_template('register.html')
+
+    return render_template('register.html', form=registration_form)
 
 # game page
 @app.route('/home/')
