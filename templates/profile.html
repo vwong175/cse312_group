@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
   </head>
 
-  <body onload="welcome();">
+  <body>
     <div class="Header">
       <h1> Rock Paper Scissors </h1>
       <br>
@@ -15,7 +15,7 @@
 
     <ul>
       <li><a href="{{url_for('leaderboard_page')}}">Leaderboard</a></li>
-      <!-- <li><a href="{{url_for('profile_page')}}">Profile</a></li> uncomment this when the profile page works-->
+      <li><a href="{{url_for('profile_page', userid=user._id )}}">Profile</a></li>
       <li><a href="{{url_for('home_page')}}">Home</a></li>
     </ul>
 
@@ -33,7 +33,6 @@
     <input type="submit" value="Check leader board">
     </form>
   
-    <!--<script src="{{ url_for('static', filename='functions.js') }}"></script>-->
   </body>
 
 </html>

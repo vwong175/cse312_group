@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, session, redirect, jsonify, flash
 from flask_pymongo import MongoClient
 from models import User
+from database import users
 from forms import *
 # from pymongo import MongoClient
 
@@ -13,7 +14,7 @@ def login_page():
     login_form = LoginForm()
 
     if login_form.validate_on_submit():
-        return User.login()
+        return User().login()
 
     return render_template('login.html', form=login_form)
 
@@ -22,11 +23,8 @@ def login_page():
 def signup_page():
     registration_form = RegistrationForm()
 
-    if registration_form.validate_on_submit():
-        #TODO: Save the information in the database and display a message that they can log in
-        User().signup()
-        flash("You successfully signed up!")
-        return redirect(url_for("login_page"))
+    if request.method == "POST": #Another way: registration_form.validate_on_submit():
+        return User().signup()
 
     return render_template('register.html', form=registration_form)
 
@@ -41,7 +39,7 @@ def about_page():
     return render_template('about.html')
 
 # profile page
-@app.route('/profile/<userid>', methods=['GET'])
+@app.route('/profile/<string:userid>', methods=['GET'])
 def profile_page(userid):
     if session.get("userid") != userid:
         return jsonify({"failed": "Login first."}), 401
