@@ -1,13 +1,7 @@
 import bcrypt
-from flask import Flask, jsonify, request, session, redirect
-from pymongo import MongoClient
-# from server import users
+from flask import Flask, jsonify, request, session, redirect, url_for, flash
+from database import users
 import uuid
-
-client = MongoClient('localhost', 27017) #Connect to the hostname 'mongo' as defined in the docker compose file
-db = client["userInfo"]
-users = db["users"]
-rank = db["rank"] # rank in {"username", rank#} format
 
 class User:
 
@@ -41,17 +35,19 @@ class User:
         if users.insert_one(user):
             id = user["_id"]
             print(list(users.find()))
+            return redirect(url_for('login_page'))
             # return redirect('/profile/'+id)
 
         return jsonify({"failed": "Signup failed"}), 400
 
     def signout(self):
         session.clear()
+        flash("Sucessfully signed out!")
         return redirect('/')
 
     def login(self):
 
-        userFound = users.find_one({"username": request.form.get('username')})
+        userFound: dict = users.find_one({"email": request.form.get('email')})
 
         if userFound and bcrypt.hashpw(request.form.get('password').encode(),userFound['salt']) == userFound['password']:
             return self.start_session(userFound)
