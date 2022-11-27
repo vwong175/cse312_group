@@ -9,31 +9,31 @@
 
         {{ form.hidden_tag() }}
 
-        <!-- <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus=""> -->
-        {{ form.username.label }}
-        {{ form.username }}
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control") }}
 
-        <!-- <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus=""> -->
 
-        {{ form.email.label }}
-        {{ form.email }}
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+        <ul>
+          {% for error in form.email.errors %}
+              <li style="color: red"> {{ error }}</li> 
+          {% endfor %}
+        </ul>
 
-        <!-- <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required=""> -->
 
-        {{ form.password.label }}
-        {{ form.password }}
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control") }}
 
-        <!-- <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
-        <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required="" autofocus=""> -->
-
-        {{ form.confirm_password.label }}
-        {{ form.confirm_password }}
+        {{ form.confirm_password.label(class="form-label") }}
+        {{ form.confirm_password(class="form-control") }}
+        <ul>
+          {% for error in form.confirm_password.errors %}
+              <li style="color: red"> {{ error }}</li> 
+          {% endfor %}
+        </ul>
         
-        <!-- <button class="btn btn-lg btn-dark btn-block" type="submit">Register</button> -->
-        {{ form.submit }}
+        {{ form.submit(class="btn btn-dark") }}
 
         <p><a href="{{ url_for('login_page') }}" class="link-info">Already have account?</a></p>
       </form>

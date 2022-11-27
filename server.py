@@ -12,10 +12,8 @@ app.secret_key = b'cse312 group project secret key'
 @app.route('/', methods=["POST", "GET"])
 def login_page():
     login_form = LoginForm()
-
     if login_form.validate_on_submit():
         return User().login()
-
     return render_template('login.html', form=login_form)
 
 # # signup page
@@ -23,9 +21,9 @@ def login_page():
 def signup_page():
     registration_form = RegistrationForm()
 
-    if request.method == "POST": #Another way: registration_form.validate_on_submit():
+    if registration_form.validate_on_submit():
         return User().signup()
-
+        
     return render_template('register.html', form=registration_form)
 
 # game page
@@ -49,39 +47,13 @@ def profile_page(userid):
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
-    board = list(rank.find())
+    # board = list(rank.find())
     sample_board = [
         {"rank": "1", "username": "vwong", "wins": 10},
         {"rank": "2", "username": "poop", "wins": 2},
         {"rank": "3", "username": "valerie", "wins": 1}
     ]
     return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
-
-# @app.route('/signup/', methods=['POST', "GET"])
-# def signup_page():
-#     if request.method == "POST":
-#         return User().signup()
-#     else:
-#         return render_template("register.html")
-
-# @app.route('/', methods=['POST', "GET"])
-# def changeToSignup():
-#   return redirect('/signup', code= 302)
-
-# @app.route('/profile/signout')
-# def signout():
-#   return User().signout()
-
-# @app.route('/profile/')
-# def profileCheck():
-#   if session.get("userid") == None:
-#     return jsonify({"failed": "Login first."}), 401
-#   return redirect('/profile/'+session.get("userid"))
-
-# @app.route('/login', methods=['POST'])
-# def login():
-#   return User().login()
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8081, debug=True)

@@ -1,7 +1,6 @@
 import bcrypt
-from flask import Flask, jsonify, request, session, redirect, url_for
+from flask import Flask, jsonify, request, session, redirect, url_for, flash
 from database import users
-# from server import users
 import uuid
 
 class User:
@@ -43,6 +42,7 @@ class User:
 
     def signout(self):
         session.clear()
+        flash("Sucessfully signed out!")
         return redirect('/')
 
     def login(self):
