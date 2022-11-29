@@ -6,10 +6,11 @@ from forms import *
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key'
 
-#TODO: If a user is already logged in, GET to / should redirect to home
 # root: login page
 @app.route('/', methods=["POST", "GET"])
 def login_page():
+    if "username" in session:
+        return redirect(url_for("home_page"))
     login_form = LoginForm()
     if login_form.validate_on_submit():
         return User().login()
