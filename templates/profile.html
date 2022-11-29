@@ -1,39 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Rock, Paper, Scissors</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-  </head>
+{% extends "layout.html" %}
 
-  <body onload="welcome();">
-    <div class="Header">
-      <h1> Rock Paper Scissors </h1>
-      <br>
-    </div>
-
-    <ul>
-      <li><a href="{{url_for('leaderboard_page')}}">Leaderboard</a></li>
-      <!-- <li><a href="{{url_for('profile_page')}}">Profile</a></li> uncomment this when the profile page works-->
-      <li><a href="{{url_for('home_page')}}">Home</a></li>
-    </ul>
-
-    <h1> Welcome back {{ user.username }} !</h1>
-    <div> Here is some information about yourself. </div>
-    <div>&nbsp&nbspPlayed games: {{ user.played }}</div>
-    <div>&nbsp&nbspWon games: {{ user.wins }}</div>
-    <div>&nbsp&nbspCurrent rank: {{ rank }}</div>
-
-    <form action="/profile/signout" method="get">
-    <input type="submit" value="Sign out">
-    </form>
-
-    <form action="{{url_for('leaderboard_page') }}" method="get">
-    <input type="submit" value="Check leader board">
-    </form>
+{% block content %}
+<body>
   
-    <!--<script src="{{ url_for('static', filename='functions.js') }}"></script>-->
-  </body>
+  <li><a href="{{url_for('profile_page', userid=user._id )}}">Profile</a></li>
 
-</html>
+  <h1> Welcome back {{ user.username }} !</h1>
+  <div> Here is some information about yourself. </div>
+  <div>Played games: {{ user.played }}</div>
+  <div>Won games: {{ user.wins }}</div>
+  <div>Current rank: {{ rank }}</div>
+
+  <form action="/profile/signout" method="GET">
+    <input type="submit" class="btn btn-outline-secondary" value="Sign out">
+  </form>
+
+  <form action="{{url_for('leaderboard_page') }}" method="GET">
+    <input type="submit" class="btn btn-outline-secondary" value="Check leader board">
+  </form>
+
+</body>
+{% endblock content%}

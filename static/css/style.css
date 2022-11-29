@@ -28,6 +28,10 @@ body {
   padding: 20px;
   font-family: Helvetica, sans-serif;
 } */
+header
+{
+ height: 110px ; /* Approx */
+}
 
 .Restart-btn {
   background-color: black;

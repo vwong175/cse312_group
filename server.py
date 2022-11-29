@@ -1,35 +1,29 @@
-from flask import Flask, render_template, url_for, request, session, redirect, jsonify
-from flask_pymongo import MongoClient
-# from models import User
-
-from pymongo import MongoClient
+from flask import Flask, render_template, url_for, request, session, redirect, jsonify, flash
+from models import User
+from database import users
+from forms import *
 
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key'
 
-client = MongoClient('localhost', 27017) #Connect to the hostname 'mongo' as defined in the docker compose file
-db = client["userInfo"]
-users = db["users"]
-# rank in {"username", rank#} format
-rank = db["rank"]
-
+#TODO: If a user is already logged in, GET to / should redirect to home
 # root: login page
 @app.route('/', methods=["POST", "GET"])
 def login_page():
-    if request.method == "GET":
-        return render_template('login.html')
-    else:
-        #TODO
-        return "Need to implement logic for authenticating user"
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        return User().login()
+    return render_template('login.html', form=login_form)
 
 # signup page
 @app.route('/signup/', methods=["POST", "GET"])
 def signup_page():
-    if request.method == "POST":
-        #TODO: Save the information in the database and display a message that they can log in
-        return redirect(url_for("login_page"))
-    else:
-        return render_template('register.html')
+    registration_form = RegistrationForm()
+
+    if registration_form.validate_on_submit():
+        return User().signup()
+        
+    return render_template('register.html', form=registration_form)
 
 # game page
 @app.route('/home/')
@@ -41,8 +35,21 @@ def home_page():
 def about_page():
     return render_template('about.html')
 
-# profile page
-@app.route('/profile/<userid>', methods=['GET'])
+# signout page
+@app.route("/profile/signout")
+def signout_page():
+    return User().signout()
+
+# a user's profile page
+@app.route("/profile/")
+def profileCheck():
+  if session.get("userid") == None:
+    return jsonify({"failed": "Login first."}), 401
+  return redirect('/profile/'+session.get("userid"))
+
+#TODO: A user should be able to see another user's information, just not edit it
+# any user's profile page
+@app.route('/profile/<string:userid>', methods=['GET'])
 def profile_page(userid):
     if session.get("userid") != userid:
         return jsonify({"failed": "Login first."}), 401
@@ -52,7 +59,7 @@ def profile_page(userid):
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
-    board = list(rank.find())
+    # board = list(rank.find())
     sample_board = [
         {"rank": "1", "username": "vwong", "wins": 10},
         {"rank": "2", "username": "poop", "wins": 2},
