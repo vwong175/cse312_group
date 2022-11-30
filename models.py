@@ -8,6 +8,7 @@ class User:
     def start_session(self, user):
         session['logged_in'] = True
         session['userid'] = user["_id"]
+        session["username"] = user["username"]
         return redirect('/profile/'+user["_id"])
 
     def signup(self):
