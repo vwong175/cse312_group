@@ -24,10 +24,12 @@ class User:
             "played": 0
         }
 
-        condition1 = users.find_one({"email": user['email']}) == None
-        # Check for existing email address
-        if condition1 == False:
-            return jsonify({"failed": "Email address already in use"}), 400
+        if len(list(users.find({}))) > 0 :
+            is_avialable_email = users.find_one({"email": user['email']}) == None
+            
+            # Check for existing email address
+            if is_avialable_email == False:
+                return jsonify({"failed": "Email address already in use"}), 400
 
         if request.form.get('password') != request.form.get('confirm_password'):
             return jsonify({"failed": "password are not the same"}), 400
@@ -47,9 +49,10 @@ class User:
 
     def login(self):
 
-        userFound: dict = users.find_one({"email": request.form.get('email')})
+        if len(list(users.find({}))) > 0 :
+            userFound: dict = users.find_one({"email": request.form.get('email')})
 
-        if userFound and bcrypt.hashpw(request.form.get('password').encode(),userFound['salt']) == userFound['password']:
-            return self.start_session(userFound)
+            if userFound and bcrypt.hashpw(request.form.get('password').encode(),userFound['salt']) == userFound['password']:
+                return self.start_session(userFound)
 
         return jsonify({"failed": "Can't login due to wrong password or invalid email."}), 401
