@@ -4,7 +4,7 @@ from database import users
 from forms import *
 
 app = Flask(__name__)
-app.secret_key = b'cse312 group project secret key'
+app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
