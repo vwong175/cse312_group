@@ -34,10 +34,21 @@
               <a class="nav-item nav-link" href="/home">Home</a>
               <a class="nav-item nav-link" href="/about">About</a>
               <a class="nav-itme nav-link" href="/leaderboard">Leaderboard</a>
+              {% if session['logged_in'] == True %}
+                <a class="nav-item nav-link" href="{{url_for('profile_page', userid=user._id)}}">Profile</a></li>
+              {% endif %}
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="/">Login</a>
+              {% if session['logged_in'] == True %}
+              <form action="/profile/signout" method="GET">
+                <input type="submit" class="btn btn-secondary" value="Logout">
+              </form>
+              {% else %}
+              <form action="{{url_for('login_page') }}" method="GET">
+                <input type="submit" class="btn btn-secondary" value="Login">
+              </form>
+              {% endif %}
               <a class="nav-item nav-link" href="/signup">Register</a>
             </div>
           </div>

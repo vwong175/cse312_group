@@ -29,7 +29,11 @@ def signup_page():
 # game page
 @app.route('/home/')
 def home_page():
-    return render_template('home.html')
+    if session.get("userid") != None:
+        user = users.find_one({"_id": session.get("userid")})
+        return render_template('home.html', user=user)
+    else:
+        return render_template('home.html')
 
 # about page
 @app.route("/about/")
