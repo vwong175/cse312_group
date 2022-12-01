@@ -35,7 +35,7 @@
               <a class="nav-item nav-link" href="/about">About</a>
               <a class="nav-itme nav-link" href="/leaderboard">Leaderboard</a>
               {% if session['logged_in'] == True %}
-                <a class="nav-item nav-link" href="{{url_for('profile_page', userid=user._id)}}">Profile</a></li>
+                <a class="nav-item nav-link" href="{{url_for('profile_page', userid=session['userid'])}}">Profile</a></li>
               {% endif %}
             </div>
             <!-- Navbar Right Side -->

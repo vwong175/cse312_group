@@ -29,10 +29,14 @@ class User:
             
             # Check for existing email address
             if is_avialable_email == False:
-                return jsonify({"failed": "Email address already in use"}), 400
+                flash("Email address already in use")
+                return redirect(url_for('signup_page'))
+                #return jsonify({"failed": "Email address already in use"}), 400
 
         if request.form.get('password') != request.form.get('confirm_password'):
-            return jsonify({"failed": "password are not the same"}), 400
+            flash("password are not matched")
+            return redirect(url_for('signup_page'))
+            #return jsonify({"failed": "password are not the same"}), 400
 
 
         #TODO - Most definetly want to take a look at this one more time
@@ -55,5 +59,5 @@ class User:
 
             if userFound and bcrypt.hashpw(request.form.get('password').encode(),userFound['salt']) == userFound['password']:
                 return self.start_session(userFound)
-
-        return jsonify({"failed": "Can't login due to wrong password or invalid email."}), 401
+        flash("Can't login due to wrong password or invalid email.")
+        return redirect('/')
