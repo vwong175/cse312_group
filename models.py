@@ -35,10 +35,9 @@ class User:
             return jsonify({"failed": "password are not the same"}), 400
 
 
-        if users.insert_one(user):
-            id = user["_id"]
-            print(list(users.find()))
-            return redirect('/profile/'+id)
+        users.insert_one(user)
+        print(list(users.find()))
+        return redirect(url_for('login_page'))
 
         return jsonify({"failed": "Signup failed"}), 400
 

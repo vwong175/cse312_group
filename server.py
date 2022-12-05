@@ -2,9 +2,11 @@ from flask import Flask, render_template, url_for, request, session, redirect, j
 from models import User
 from database import users
 from forms import *
+from flask_socketio import SocketIO, send, emit
 
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
+socketio = SocketIO(app)
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
@@ -68,5 +70,9 @@ def leaderboard_page():
     ]
     return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
 
+@socketio.on('message')
+def message(data):
+    print(f"\r\n{data}\r\n")
+    send(data)
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    socketio.run(app,host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
