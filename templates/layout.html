@@ -35,7 +35,7 @@
               <a class="nav-item nav-link" href="/about">About</a>
               <a class="nav-itme nav-link" href="/leaderboard">Leaderboard</a>
               {% if session['logged_in'] == True %}
-                <a class="nav-item nav-link" href="{{url_for('profile_page', userid=session['userid'])}}">Profile</a></li>
+                <a class="nav-item nav-link" href="{{url_for('profile_page', username=session['username'])}}">Profile</a></li>
               {% endif %}
             </div>
             <!-- Navbar Right Side -->
@@ -51,7 +51,7 @@
               {% endif %}
 
               {% if session['logged_in'] == True %}
-                <a class="nav-item nav-link" href="{{url_for('profile_page', userid=session['userid'])}}">{{ session['username'] }}</a>
+                <a class="nav-item nav-link" href="{{url_for('profile_page', username=session['username'])}}">{{ session['username'] }}</a>
               {% else %}
                 <a class="nav-item nav-link" href="/signup">Register</a>
               {% endif %}

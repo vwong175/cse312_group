@@ -5,8 +5,8 @@
   
   <li><a href="{{url_for('profile_page', username=user.username )}}">Profile</a></li>
 
-  <h1> Welcome back {{ user.username }} !</h1>
-  <div> Here is some information about yourself. </div>
+  <h1> Welcome {{ username }} !</h1>
+  <div> Here is some information about {{ user.username }}. </div>
   <div>Played games: {{ user.played }}</div>
   <div>Won games: {{ user.wins }}</div>
   <div>Current rank: {{ rank }}</div>

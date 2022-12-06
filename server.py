@@ -58,22 +58,26 @@ def profileCheck():
 @app.route('/profile/<string:username>', methods=['GET'])
 def profile_page(username):
     user = users.find_one({"username": username})
-    return render_template('profile.html', user=user)
+    if user:
+        return render_template('profile.html', user=user, username=session.get('username') , rank="Not on list")
+    else:
+        return jsonify({"failed": "User can not be found"}), 401
 
 @app.route('/profile/<string:username>', methods=['POST'])
 def edit_username(username):
     if session.get("username") != username:
         return jsonify({"failed": "In order to change this account's username, please login."}), 401
-    newUsername = request.form.get('newUsername')
+
+    newUsername = request.form['newUsername']
 
     is_avialable_name = users.find_one({"username": session.get('username')}) == None
     if is_avialable_name == False:
         flash("Username address already in use")
         return redirect('/profile/'+session.get("username"))
 
-    users.update_one({"username": username}, {'$set':{"username":newUsername}})
+    users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
-    return redirect('/profile/'+session.get("username"))
+    return redirect('/profile/'+newUsername)
 
 # leaderboard page
 @app.route('/leaderboard/')

@@ -9,7 +9,7 @@ class User:
         session['logged_in'] = True
         session['userid'] = user["_id"]
         session["username"] = user["username"]
-        return redirect('/profile/'+user["_id"])
+        return redirect('/profile/'+user["username"])
 
     def signup(self):
         salt = bcrypt.gensalt()
