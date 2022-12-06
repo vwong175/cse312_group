@@ -1,20 +1,24 @@
-from flask import Flask, render_template, url_for, request, session, redirect, jsonify, flash
+from flask import Flask, render_template, url_for, session, redirect, jsonify
 from models import User
 from database import users
 from forms import *
 
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
+
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
+socketio = SocketIO(app, cors_allowed_origins='*')
+ROOMS = ["Lounge", "news", "games"]
 
 # root: login page
-@app.route('/', methods=["POST", "GET"])
-def login_page():
-    if "username" in session:
-        return redirect(url_for("home_page"))
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        return User().login()
-    return render_template('login.html', form=login_form)
+# @app.route('/', methods=["POST", "GET"])
+# def login_page():
+#     if "username" in session:
+#         return redirect(url_for("home_page"))
+#     login_form = LoginForm()
+#     if login_form.validate_on_submit():
+#         return User().login()
+#     return render_template('login.html', form=login_form)
 
 # signup page
 @app.route('/signup/', methods=["POST", "GET"])
@@ -72,5 +76,32 @@ def leaderboard_page():
     ]
     return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
 
+########################################################################################
+
+# Pretty printed flask socketio tutorial with Sandeep tutorial
+@app.route("/")
+def index():
+    username = session.get("username", "anonymous")
+    return render_template("./prettyprinted/chat.html", username = username, rooms = ROOMS)
+
+# Non custom event
+@socketio.on('message')
+def handleMessage(data):
+    msg = data["msg"]
+    username = data["username"]
+    room = data["room"]
+    send({'msg': msg, 'username': username}, room=room)
+
+@socketio.on('join')
+def join(data):
+    join_room(data['room'])
+    send({'msg': data['username'] + " has joined the " + data["room"] + " room"}, to=data["room"]) #because we are using send, this will be sent to the "messages" event bucket on the client side
+
+@socketio.on("leave")
+def leave(data):
+    leave_room(data["room"])
+    send({'msg': data["username"] + " has left the " + data["room"] + " room"}, to=data["room"])
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    # app.run(host="0.0.0.0", port=8080, debug=True)
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
