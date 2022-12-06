@@ -3,7 +3,7 @@
 {% block content %}
 <body>
   
-  <li><a href="{{url_for('profile_page', userid=user._id )}}">Profile</a></li>
+  <li><a href="{{url_for('profile_page', username=user.username )}}">Profile</a></li>
 
   <h1> Welcome back {{ user.username }} !</h1>
   <div> Here is some information about yourself. </div>
@@ -17,6 +17,12 @@
 
   <form action="{{url_for('leaderboard_page') }}" method="GET">
     <input type="submit" class="btn btn-outline-secondary" value="Check leader board">
+  </form>
+
+  <form action="{{url_for('profile_page', username=user.username)}}", method="POST">
+      <input type="text", name="newUsername", placeholder="New Username", required, class="form-field">
+      <br><br>
+      <input type="submit" value="Submit" style="float: left;">
   </form>
 
 </body>

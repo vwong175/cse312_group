@@ -19,31 +19,35 @@ class User:
             "username": request.form.get('username'),
             "email": request.form.get('email'),
             "salt": salt,
-            "password": bcrypt.hashpw(request.form.get('password').encode(),salt),
+            "password": bcrypt.hashpw(request.form.get('password').encode(), salt),
             "wins": 0,
             "played": 0
         }
 
-        if len(list(users.find({}))) > 0 :
+        if len(list(users.find({}))) > 0:
             is_avialable_email = users.find_one({"email": user['email']}) == None
-            
+            is_avialable_name = users.find_one({"username": user['username']}) == None
+
             # Check for existing email address
             if is_avialable_email == False:
                 flash("Email address already in use")
                 return redirect(url_for('signup_page'))
-                #return jsonify({"failed": "Email address already in use"}), 400
+
+            if is_avialable_name == False:
+                flash("Username already in use")
+                return redirect(url_for('signup_page'))
+            # return jsonify({"failed": "Email address already in use"}), 400
 
         if request.form.get('password') != request.form.get('confirm_password'):
             flash("password are not matched")
             return redirect(url_for('signup_page'))
-            #return jsonify({"failed": "password are not the same"}), 400
+            # return jsonify({"failed": "password are not the same"}), 400
 
-
-        #TODO - Most definetly want to take a look at this one more time
+        # TODO - Most definetly want to take a look at this one more time
         users.insert_one(user)
         print(list(users.find()))
         return redirect(url_for('login_page'))
-            # return redirect('/profile/'+id)
+        # return redirect('/profile/'+id)
 
         return jsonify({"failed": "Signup failed"}), 400
 
