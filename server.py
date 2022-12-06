@@ -2,12 +2,12 @@ from flask import Flask, render_template, url_for, request, session, redirect, j
 from models import User
 from database import users
 from forms import *
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app)
-
+ROOMS = ['General','room1','room2','room3','room4']
 # root: login page
 @app.route('/', methods=["POST", "GET"])
 def login_page():
@@ -31,7 +31,9 @@ def signup_page():
 # game page
 @app.route('/home/')
 def home_page():
-    return render_template('home.html')
+    user = users.find_one({"_id": session.get("userid")})
+    render_username = user['username']
+    return render_template('chat.html', username=render_username, rooms=ROOMS)
 
 # about page
 @app.route("/about/")
@@ -72,7 +74,20 @@ def leaderboard_page():
 
 @socketio.on('message')
 def message(data):
-    print(f"\r\n{data}\r\n")
-    send(data)
+    send({'message': data['message'], 'username': data['username']}, room = data['room'])
+
+@socketio.on('join')
+def join(data):
+
+    join_room(data['room'])   
+    send({'message':data['username'] + " has joined the " + data['room'] + " room."}, room = data['room'])
+
+@socketio.on('leave')
+def leave(data):
+
+    leave_room(data['room']) 
+    send({'message':data['username'] + " has left the " + data['room'] + " room."}, room = data['room'])
+
+    
 if __name__ == "__main__":
-    socketio.run(app,host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
