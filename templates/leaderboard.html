@@ -12,7 +12,7 @@
     <tbody>
       {% for person in boards %}
         <tr>
-          <td>{{ person.rank }}</td>
+          <td>{{ loop.index }}</td>
           <td>{{ person.username }}</td>
           <td>{{ person.wins }}</td>
         </tr>
