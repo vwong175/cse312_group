@@ -24,14 +24,14 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark static-top">
         <div class="container">
-          <a class="navbar-brand" href="/home">Rock Paper Scissors</a>
+          <a class="navbar-brand" href="/lobby">Rock Paper Scissors</a>
           <img src="{{ url_for('static', filename='images/logo.png') }}" alt='logo' width="30", height="24"> 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/home">Home</a>
+              <a class="nav-item nav-link" href="/lobby">Lobby</a>
               <a class="nav-item nav-link" href="/about">About</a>
               <a class="nav-itme nav-link" href="/leaderboard">Leaderboard</a>
               {% if session['logged_in'] == True %}

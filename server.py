@@ -11,14 +11,14 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 ROOMS = ["Lounge", "news", "games"]
 
 # root: login page
-# @app.route('/', methods=["POST", "GET"])
-# def login_page():
-#     if "username" in session:
-#         return redirect(url_for("home_page"))
-#     login_form = LoginForm()
-#     if login_form.validate_on_submit():
-#         return User().login()
-#     return render_template('login.html', form=login_form)
+@app.route('/', methods=["POST", "GET"])
+def login_page():
+    if "username" in session:
+        return redirect(url_for("lobby_page"))
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        return User().login()
+    return render_template('login.html', form=login_form)
 
 # signup page
 @app.route('/signup/', methods=["POST", "GET"])
@@ -30,14 +30,19 @@ def signup_page():
         
     return render_template('register.html', form=registration_form)
 
+# lobby page
+@app.route("/lobby/", methods = ["GET"])
+def lobby_page():
+    return render_template('lobby.html')
+
 # game page
-@app.route('/home/')
+@app.route('/game/')
 def home_page():
     if session.get("userid") != None:
         user = users.find_one({"_id": session.get("userid")})
-        return render_template('home.html', user=user)
+        return render_template('game.html', user=user)
     else:
-        return render_template('home.html')
+        return render_template('game.html')
 
 # about page
 @app.route("/about/")
@@ -78,11 +83,13 @@ def leaderboard_page():
 
 ########################################################################################
 
-# Pretty printed flask socketio tutorial with Sandeep tutorial
-@app.route("/")
-def index():
-    username = session.get("username", "anonymous")
-    return render_template("./prettyprinted/chat.html", username = username, rooms = ROOMS)
+# PERSONAL PRACTICE - IGNORE THE BELOW
+
+# # Pretty printed flask socketio tutorial with Sandeep tutorial
+# @app.route("/")
+# def index():
+#     username = session.get("username", "anonymous")
+#     return render_template("./prettyprinted/chat.html", username = username, rooms = ROOMS)
 
 # Non custom event
 @socketio.on('message')
@@ -102,6 +109,8 @@ def leave(data):
     leave_room(data["room"])
     send({'msg': data["username"] + " has left the " + data["room"] + " room"}, to=data["room"])
 
+#########################################################################################
+
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=8080, debug=True)
-    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
