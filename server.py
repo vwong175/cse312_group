@@ -82,7 +82,6 @@ def edit_username(username):
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
-    # board = list(rank.find())
     board = users.find().sort('wins',1)
     boards = [user for user in board]
     return render_template('leaderboard.html', boards=boards, title="Leaderboard")

@@ -18,7 +18,7 @@
   <form action="{{url_for('leaderboard_page') }}" method="GET">
     <input type="submit" class="btn btn-outline-secondary" value="Check leader board">
   </form>
-
+  
   <form action="{{url_for('profile_page', username=user.username)}}", method="POST">
       <input type="text", name="newUsername", placeholder="New Username", required, class="form-field">
       <br><br>
