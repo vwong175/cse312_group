@@ -31,21 +31,16 @@ class User:
             if is_avialable_email == False:
                 flash("Email address already in use")
                 return redirect(url_for('signup_page'))
-                #return jsonify({"failed": "Email address already in use"}), 400
 
         if request.form.get('password') != request.form.get('confirm_password'):
             flash("password are not matched")
             return redirect(url_for('signup_page'))
-            #return jsonify({"failed": "password are not the same"}), 400
 
 
         #TODO - Most definetly want to take a look at this one more time
         users.insert_one(user)
         print(list(users.find()))
         return redirect(url_for('login_page'))
-            # return redirect('/profile/'+id)
-
-        return jsonify({"failed": "Signup failed"}), 400
 
     def signout(self):
         session.clear()

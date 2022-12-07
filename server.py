@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, redirect, jsonify
+from flask import Flask, render_template, url_for, session, redirect, jsonify, request
 from models import User
 from database import users
 from forms import *
@@ -8,7 +8,6 @@ from flask_socketio import SocketIO, emit, send, join_room, leave_room
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app, cors_allowed_origins='*')
-ROOMS = ["Lounge", "news", "games"]
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
@@ -33,7 +32,22 @@ def signup_page():
 # lobby page
 @app.route("/lobby/", methods = ["GET"])
 def lobby_page():
-    return render_template('lobby.html')
+    join_room_form = JoinRoom()
+    return render_template('lobby.html', form=join_room_form)
+
+# TODO: Create a random 4 letter string for a room?
+@app.route("/create_room", methods = ["POST"])
+def create_game():
+    return
+
+# TODO: Join room functionality - Not finished yet
+@app.route('/join_room', methods=['POST'])
+def join_room():
+    if "username" in session:
+        room_id = request.form['roomID']
+        return render_template('game.html', room_id=room_id)
+    else:
+        return "Please log in first"
 
 # game page
 @app.route('/game/')
