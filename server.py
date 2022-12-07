@@ -72,11 +72,12 @@ def edit_username(username):
 
     is_avialable_name = users.find_one({"username": session.get('username')}) == None
     if is_avialable_name == False:
-        flash("Username address already in use")
+        flash("Login to this account first.")
         return redirect('/profile/'+session.get("username"))
 
     users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
+
     return redirect('/profile/'+newUsername)
 
 # leaderboard page
