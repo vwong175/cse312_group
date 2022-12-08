@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Lobby</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+          <h2>Create a game</h2>
+          <form action="/create_room" method="POST">
+            <button type="submit" id="create_room_btn" class="btn btn-primary">Create Game</button>
+          </form>
+          <!-- <button type="submit" id="create_room_btn" class="btn btn-primary">Create Game</button> -->
+        </div>
+        <div class="col-md-6">
+          <h2>Join a game</h2>
+
+          <form action="/join_room" class="join-room" method="POST">
+
+            {{ form.roomID.label(class="form-label") }}
+            {{ form.roomID(class="form-control") }}    
+
+            {{ form.submit(class="btn btn-dark") }}
+          </form>
+        </div>
+      </div>
+
+      <!-- Create a variable named username where we take the username from the backend. -->
+      <script type="text/javascript">
+        const username = `{{ username }}`;
+      </script>
+      
+      <script src="{{ url_for('static', filename='socketio.js') }}"></script>
+{% endblock content %}

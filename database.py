@@ -4,6 +4,3 @@ client = MongoClient('localhost', 27017)   #If you want to test locally
 db = client["userInfo"]
 users = db["users"]
 rank = db["rank"] # rank in {"username", rank#} format
-
-
-

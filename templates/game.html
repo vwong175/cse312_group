@@ -1,18 +1,21 @@
-<!-- Redirect to this page when the user successfully logins -->
+<!-- TODO: Add other player username once the websocket connection functionality is made -->
 
 {% extends "layout.html" %}
 {% block content %}
-    <button id="restart" class="Restart-btn" onClick="restartGame()"> Restart Game </button>
+    <!-- <button id="restart" class="Restart-btn" onClick="restartGame()"> Restart Game </button> -->
+
+    <h1> Room: {{ room_id }} </h1>
 
   <div class="Score">
     <h3> The score </h3>
     <br>
     <span id="user-score"> 0 </span> : <span id="comp-score"> 0 </span>
-    <p> user : comp </p>
+    <p> {{ username }} : comp </p>
   </div>
 
-  <p> Make your move user </p>
+  <p> Make your move {{ username }} </p>
 
+  <!-- TODO: Only if it is the current user's turn, then show visibility of all the choices -->
   <div class="Choices">
     <div class="choice" id="r">
       <img src="{{ url_for('static', filename='images/rock.png') }}" alt="rock">
@@ -31,10 +34,8 @@
     <p id="resultMessage"> Click any of the three emojis to start playing </p>
   </div>
 
-  <div class = "Instructions">
-    <p> Hello, rock, paper, scissors is a game of luck where you will be playing against another person, and both of you have to make a choice between rock, paper, or scissors at the same time. In this case, you will be playing against the computer. <b> Rock beats scissors, scissors beats paper, and paper beats rock.</b> </p>
-  </div>
-
+  <!-- TODO -->
+  <button class="btn btn-danger" id="leave_room_btn">Leave room</button>
 
   <script src="{{ url_for('static', filename='functions.js') }}"></script>
 {% endblock content %}
