@@ -23,6 +23,7 @@
 
   <form action="{{url_for('profile_page', username=user.username)}}", method="POST">
       <!-- <input type="text", name="newUsername", placeholder="New Username", required, class="form-field"> -->
+      {{ form.hidden_tag() }}
       {{ form.newUsername.label(class="form-label") }}
       {{ form.newUsername(class="form-control") }}
       <br><br>

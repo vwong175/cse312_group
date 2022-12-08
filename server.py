@@ -72,26 +72,29 @@ def edit_username(username):
 
     newUsername = request.form.get('newUsername')
 
-    is_avialable_name = users.find_one({"username": session.get('username')}) == None
+    is_avialable_name = users.find_one({"username": newUsername}) == None
     if is_avialable_name == False:
         flash("Username address already in use")
         return redirect('/profile/'+session.get("username"))
  
-    users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
+    users.find_one_and_update({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
-    return render_template('profile.html', username=newUsername)
+    return redirect('/profile/'+newUsername)
 
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
     # board = list(rank.find())
-    userInfo = users.find({})
+    user_board = users.find({}).sort("wins")
     sample_board = [
         {"rank": "1", "username": "vwong", "wins": 10},
         {"rank": "2", "username": "poop", "wins": 2},
         {"rank": "3", "username": "valerie", "wins": 1}
     ]
-    return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
+    return render_template('leaderboard.html', boards=user_board, title="Leaderboard")
+
+def wins(user):
+    return user['wins']
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)

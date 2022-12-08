@@ -22,5 +22,5 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class editUserForm(FlaskForm):
-    newUsername = StringField('New Username')
+    newUsername = StringField('newUsername', validators=[DataRequired(message="A username is required"), Length(min=2, max=20)])
     submit = SubmitField('Edit Username')
