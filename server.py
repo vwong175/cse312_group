@@ -68,14 +68,14 @@ def edit_username(username):
     if session.get("username") != username:
         return jsonify({"failed": "In order to change this account's username, please login."}), 401
 
-    newUsername = request.form['newUsername']
-
-    is_avialable_name = users.find_one({"username": session.get('username')}) == None
+    newUsername = request.form.get('newUsername')
+    print(newUsername)
+    is_avialable_name = users.find_one({"username": newUsername}) == None
     if is_avialable_name == False:
         flash("Username already in use, choose another name please.")
         return redirect('/profile/'+session.get("username"))
 
-    users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
+    users.find_one_and_update({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
 
     return redirect('/profile/'+newUsername)
