@@ -2,12 +2,10 @@ from flask import Flask, render_template, url_for, request, session, redirect, j
 from models import User
 from database import users
 from forms import *
-from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
-socketio = SocketIO(app)
-ROOMS = ['General','room1','room2','room3','room4']
+
 # root: login page
 @app.route('/', methods=["POST", "GET"])
 def login_page():
@@ -31,9 +29,11 @@ def signup_page():
 # game page
 @app.route('/home/')
 def home_page():
-    user = users.find_one({"_id": session.get("userid")})
-    render_username = user['username']
-    return render_template('chat.html', username=render_username, rooms=ROOMS)
+    if session.get("userid") != None:
+        user = users.find_one({"_id": session.get("userid")})
+        return render_template('home.html', user=user)
+    else:
+        return render_template('home.html')
 
 # about page
 @app.route("/about/")
@@ -48,23 +48,44 @@ def signout_page():
 # a user's profile page
 @app.route("/profile/")
 def profileCheck():
-  if session.get("userid") == None:
-    return jsonify({"failed": "Login first."}), 401
-  return redirect('/profile/'+session.get("userid"))
+  if session.get("username") == None:
+    return jsonify({"failed": "Login first to view profiles."}), 401
+
+  return redirect('/profile/'+session.get("username"))
 
 #TODO: A user should be able to see another user's information, just not edit it
-# any user's profile page
-@app.route('/profile/<string:userid>', methods=['GET'])
-def profile_page(userid):
-    if session.get("userid") != userid:
-        return jsonify({"failed": "Login first."}), 401
-    user = users.find_one({"_id": userid})
-    return render_template('profile.html', user=user)
+# any user's page
+# change to view all users by username but edit only with session login
+@app.route('/profile/<string:username>', methods=['GET'])
+def profile_page(username):
+    user = users.find_one({"username": username})
+    if user:
+        editUsernameForm = editUserForm()
+        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank="Not on list")
+    else:
+        return jsonify({"failed": "User can not be found"}), 401
+
+@app.route('/profile/<string:username>', methods=['POST'])
+def edit_username(username):
+    if session.get("username") != username:
+        return jsonify({"failed": "In order to change this account's username, please login."}), 401
+
+    newUsername = request.form.get('newUsername')
+
+    is_avialable_name = users.find_one({"username": session.get('username')}) == None
+    if is_avialable_name == False:
+        flash("Username address already in use")
+        return redirect('/profile/'+session.get("username"))
+ 
+    users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
+    session["username"] = newUsername
+    return render_template('profile.html', username=newUsername)
 
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
     # board = list(rank.find())
+    userInfo = users.find({})
     sample_board = [
         {"rank": "1", "username": "vwong", "wins": 10},
         {"rank": "2", "username": "poop", "wins": 2},
@@ -72,22 +93,5 @@ def leaderboard_page():
     ]
     return render_template('leaderboard.html', boards=sample_board, title="Leaderboard")
 
-@socketio.on('message')
-def message(data):
-    send({'message': data['message'], 'username': data['username']}, room = data['room'])
-
-@socketio.on('join')
-def join(data):
-
-    join_room(data['room'])   
-    send({'message':data['username'] + " has joined the " + data['room'] + " room."}, room = data['room'])
-
-@socketio.on('leave')
-def leave(data):
-
-    leave_room(data['room']) 
-    send({'message':data['username'] + " has left the " + data['room'] + " room."}, room = data['room'])
-
-    
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
+    app.run(host="0.0.0.0", port=8080, debug=True)
