@@ -91,7 +91,7 @@ def profile_page(username):
     user = users.find_one({"username": username})
     user_board = users.find({}).sort("wins", -1)
     sorted_user_board = [user for user in user_board]
-    user_rank = sorted_user_board.index(user)
+    user_rank = sorted_user_board.index(user) + 1
     if user:
         editUsernameForm = editUserForm()
         return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank=user_rank)
@@ -155,5 +155,5 @@ def leave(data):
 #########################################################################################
 
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=8080, debug=True)
+    #app.run(host="0.0.0.0", port=8080, debug=True)
     socketio.run(app, host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
