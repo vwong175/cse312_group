@@ -50,6 +50,7 @@ def signout_page():
 def profileCheck():
   if session.get("username") == None:
     return jsonify({"failed": "Login first to view profiles."}), 401
+
   return redirect('/profile/'+session.get("username"))
 
 #TODO: A user should be able to see another user's information, just not edit it
@@ -59,7 +60,8 @@ def profileCheck():
 def profile_page(username):
     user = users.find_one({"username": username})
     if user:
-        return render_template('profile.html', user=user, username=session.get('username') , rank="Not on list")
+        editUsernameForm = editUserForm()
+        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank="Not on list")
     else:
         return jsonify({"failed": "User can not be found"}), 401
 
@@ -69,16 +71,15 @@ def edit_username(username):
         return jsonify({"failed": "In order to change this account's username, please login."}), 401
 
     newUsername = request.form.get('newUsername')
-    print(newUsername)
-    is_avialable_name = users.find_one({"username": newUsername}) == None
+
+    is_avialable_name = users.find_one({"username": session.get('username')}) == None
     if is_avialable_name == False:
-        flash("Username already in use, choose another name please.")
+        flash("Username address already in use")
         return redirect('/profile/'+session.get("username"))
-
-    users.find_one_and_update({"username": session.get("username")}, {"$set": {'username': newUsername}})
+ 
+    users.update_one({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
-
-    return redirect('/profile/'+newUsername)
+    return render_template('profile.html', username=newUsername)
 
 # leaderboard page
 @app.route('/leaderboard/')
