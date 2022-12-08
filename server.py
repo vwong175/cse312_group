@@ -85,16 +85,9 @@ def edit_username(username):
 @app.route('/leaderboard/')
 def leaderboard_page():
     # board = list(rank.find())
-    user_board = users.find({}).sort("wins")
-    sample_board = [
-        {"rank": "1", "username": "vwong", "wins": 10},
-        {"rank": "2", "username": "poop", "wins": 2},
-        {"rank": "3", "username": "valerie", "wins": 1}
-    ]
+    user_board = users.find({}).sort("wins", -1)
     return render_template('leaderboard.html', boards=user_board, title="Leaderboard")
 
-def wins(user):
-    return user['wins']
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
