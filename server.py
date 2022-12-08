@@ -84,6 +84,7 @@ def edit_username(username):
 @app.route('/leaderboard/')
 def leaderboard_page():
     # board = list(rank.find())
+    userInfo = users.find({})
     sample_board = [
         {"rank": "1", "username": "vwong", "wins": 10},
         {"rank": "2", "username": "poop", "wins": 2},
