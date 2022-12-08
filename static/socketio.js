@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Request to create a room
     document.querySelector("#create_room_btn").onclick = () => {
-        socket.emit('create_room', {"name": username});
+        socket.emit('create_room', {"username": username});
         console.log("Emitted the message")
     }
 

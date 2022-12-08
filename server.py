@@ -42,8 +42,11 @@ def signup_page():
 # lobby page
 @app.route("/lobby/", methods = ["GET"])
 def lobby_page():
-    join_room_form = JoinRoom()
-    return render_template('lobby.html', form=join_room_form)
+    if "username" in session:
+        join_room_form = JoinRoom()
+        return render_template('lobby.html', form=join_room_form, username=session["username"])
+    else:
+        return redirect(url_for("login_page"))
 
 # Waiting for another player page
 @app.route("/waiting_room/", methods=["GET"])
@@ -100,16 +103,20 @@ def leaderboard_page():
 
 # WEBSOCKET ROUTES
 
-#TODO: Neeed to fix why the waiting page isnt being rendered
+@app.route('/create_room', methods=["POST"])
+def enter_waiting_room():
+    return redirect(url_for("waiting_page"))
+
 @socketio.on('create_room')
 def create_room(data):
+    print(f"The received data is: {data}")
     room_code = create_random_string(len = 4)
     print(f"The room code is: {room_code}")
     join_room(room_code)
-    players[room_code] = data["name"]
+    players[room_code] = data["username"]
     socketio.emit('new_game', {'room_id': room_code})
+    print(f"The items in players is: {players.items()}")
     print(f"The room {room_code} has been created ")
-    return redirect(url_for("waiting_page"))
 
 #TODO
 @socketio.on('join')
