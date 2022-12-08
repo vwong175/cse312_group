@@ -2,12 +2,24 @@ from flask import Flask, render_template, url_for, session, redirect, jsonify, r
 from models import User
 from database import users
 from forms import *
+import random
+import string
 
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app, cors_allowed_origins='*')
+
+# TODO
+# Socket global variables
+players = {}
+choice1 = ""
+choice2 = ""
+
+# Creates a random string in capital letters of length len
+def create_random_string(len: int) -> str:
+    return ''.join(random.choices(string.ascii_uppercase, k=len))
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
@@ -23,10 +35,8 @@ def login_page():
 @app.route('/signup/', methods=["POST", "GET"])
 def signup_page():
     registration_form = RegistrationForm()
-
     if registration_form.validate_on_submit():
         return User().signup()
-        
     return render_template('register.html', form=registration_form)
 
 # lobby page
@@ -35,19 +45,10 @@ def lobby_page():
     join_room_form = JoinRoom()
     return render_template('lobby.html', form=join_room_form)
 
-# TODO: Create a random 4 letter string for a room?
-@app.route("/create_room", methods = ["POST"])
-def create_game():
-    return
-
-# TODO: Join room functionality - Not finished yet
-@app.route('/join_room', methods=['POST'])
-def join_room():
-    if "username" in session:
-        room_id = request.form['roomID']
-        return render_template('game.html', room_id=room_id)
-    else:
-        return "Please log in first"
+# Waiting for another player page
+@app.route("/waiting_room/", methods=["GET"])
+def waiting_page():
+    return render_template("waiting_room.html", username = session["username"])
 
 # game page
 @app.route('/game/')
@@ -97,24 +98,22 @@ def leaderboard_page():
 
 ########################################################################################
 
-# PERSONAL PRACTICE - IGNORE THE BELOW
+# WEBSOCKET ROUTES
 
-# # Pretty printed flask socketio tutorial with Sandeep tutorial
-# @app.route("/")
-# def index():
-#     username = session.get("username", "anonymous")
-#     return render_template("./prettyprinted/chat.html", username = username, rooms = ROOMS)
+#TODO: Neeed to fix why the waiting page isnt being rendered
+@socketio.on('create_room')
+def create_room(data):
+    room_code = create_random_string(len = 4)
+    print(f"The room code is: {room_code}")
+    join_room(room_code)
+    players[room_code] = data["name"]
+    socketio.emit('new_game', {'room_id': room_code})
+    print(f"The room {room_code} has been created ")
+    return redirect(url_for("waiting_page"))
 
-# Non custom event
-@socketio.on('message')
-def handleMessage(data):
-    msg = data["msg"]
-    username = data["username"]
-    room = data["room"]
-    send({'msg': msg, 'username': username}, room=room)
-
+#TODO
 @socketio.on('join')
-def join(data):
+def create_game(data):
     join_room(data['room'])
     send({'msg': data['username'] + " has joined the " + data["room"] + " room"}, to=data["room"]) #because we are using send, this will be sent to the "messages" event bucket on the client side
 
