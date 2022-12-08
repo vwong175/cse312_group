@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
-
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message="A username is required"), Length(min=2, max=20)])
 
@@ -24,5 +23,8 @@ class LoginForm(FlaskForm):
 
 class JoinRoom(FlaskForm):
     roomID = StringField('RoomID', validators=[DataRequired(message="A room id is required")])
-
     submit = SubmitField('Join Room')
+
+class editUserForm(FlaskForm):
+    newUsername = StringField('newUsername', validators=[DataRequired(message="A username is required"), Length(min=2, max=20)])
+    submit = SubmitField('Edit Username')
