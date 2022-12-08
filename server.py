@@ -3,8 +3,10 @@ from models import User
 from database import users
 from forms import *
 
+
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
+
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
@@ -59,9 +61,12 @@ def profileCheck():
 @app.route('/profile/<string:username>', methods=['GET'])
 def profile_page(username):
     user = users.find_one({"username": username})
+    user_board = users.find({}).sort("wins", -1)
+    sorted_user_board = [user for user in user_board]
+    user_rank = sorted_user_board.index(user)
     if user:
         editUsernameForm = editUserForm()
-        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank="Not on list")
+        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank=user_rank)
     else:
         return jsonify({"failed": "User can not be found"}), 401
 
@@ -85,16 +90,9 @@ def edit_username(username):
 @app.route('/leaderboard/')
 def leaderboard_page():
     # board = list(rank.find())
-    user_board = users.find({}).sort("wins")
-    sample_board = [
-        {"rank": "1", "username": "vwong", "wins": 10},
-        {"rank": "2", "username": "poop", "wins": 2},
-        {"rank": "3", "username": "valerie", "wins": 1}
-    ]
+    user_board = users.find({}).sort("wins", -1)
     return render_template('leaderboard.html', boards=user_board, title="Leaderboard")
 
-def wins(user):
-    return user['wins']
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
