@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, redirect, jsonify, request
+from flask import Flask, render_template, url_for, session, redirect, jsonify, request, flash
 from models import User
 from database import users
 from forms import *
@@ -48,10 +48,15 @@ def lobby_page():
     else:
         return redirect(url_for("login_page"))
 
+# TODO
 # Waiting for another player page
 @app.route("/waiting_room/", methods=["GET"])
 def waiting_page():
-    return render_template("waiting_room.html", username = session["username"])
+    username = session["username"]
+    for room in players:
+        if players[room] == username:
+            room_id = room
+    return render_template("waiting_room.html", username = username, room_id = room_id)
 
 # game page
 @app.route('/game/')
@@ -80,9 +85,7 @@ def profileCheck():
 
   return redirect('/profile/'+session.get("username"))
 
-#TODO: A user should be able to see another user's information, just not edit it
 # any user's page
-# change to view all users by username but edit only with session login
 @app.route('/profile/<string:username>', methods=['GET'])
 def profile_page(username):
     user = users.find_one({"username": username})
