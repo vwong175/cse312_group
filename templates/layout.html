@@ -12,6 +12,8 @@
     {% block css %}{% endblock %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
+    <!-- SOCKET IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 
     {% if title %}
         <title>Rock Paper Scissors - {{ title }}</title>
@@ -24,14 +26,14 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-dark static-top">
         <div class="container">
-          <a class="navbar-brand" href="/home">Rock Paper Scissors</a>
+          <a class="navbar-brand" href="/lobby">Rock Paper Scissors</a>
           <img src="{{ url_for('static', filename='images/logo.png') }}" alt='logo' width="30", height="24"> 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/home">Home</a>
+              <a class="nav-item nav-link" href="/lobby">Lobby</a>
               <a class="nav-item nav-link" href="/about">About</a>
               <a class="nav-itme nav-link" href="/leaderboard">Leaderboard</a>
               {% if session['logged_in'] == True %}
@@ -45,7 +47,7 @@
                 <input type="submit" class="btn btn-secondary" value="Logout">
               </form>
               {% else %}
-              <form action="{{url_for('login_page') }}" method="GET">
+              <form action="{{url_for('signup_page') }}" method="GET">
                 <input type="submit" class="btn btn-secondary" value="Login">
               </form>
               {% endif %}
