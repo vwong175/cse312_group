@@ -59,9 +59,12 @@ def profileCheck():
 @app.route('/profile/<string:username>', methods=['GET'])
 def profile_page(username):
     user = users.find_one({"username": username})
+    user_board = users.find({}).sort("wins", -1)
+    sorted_user_board = [user for user in user_board]
+    user_rank = sorted_user_board.index(user)
     if user:
         editUsernameForm = editUserForm()
-        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank="Not on list")
+        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank=user_rank)
     else:
         return jsonify({"failed": "User can not be found"}), 401
 
