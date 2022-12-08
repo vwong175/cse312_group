@@ -50,7 +50,7 @@ class User:
         return redirect(url_for('login_page'))
             # return redirect('/profile/'+id)
 
-        return jsonify({"failed": "Signup failed"}), 400
+        
 
     def signout(self):
         session.clear()
