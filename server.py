@@ -11,11 +11,10 @@ app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-# TODO
+
 # Socket global variables
 players = {}
-choice1 = ""
-choice2 = ""
+choice = {'choice1':'','choice2':''}
 
 # Creates a random string in capital letters of length len
 def create_random_string(len: int) -> str:
@@ -135,11 +134,63 @@ def create_room(data):
 
 @socketio.on('join_game')
 def join_game(data):
-
     join_room(data['room_id'])
-
     socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
-    socketio.emit('user1_joined', {'user2': players[data['room_id']], 'user1':data['username']})
+
+@socketio.on('player1_choice')
+def player1_choice(data):
+    choice['choice1'] = data['choice']
+    choice1 = choice['choice1']
+    choice2 = choice['choice2']
+    result = ''
+    if choice2 != '':
+        if choice1 == choice2:
+            result = 'TIE'
+        elif choice1 == 'rock':
+            if choice2 == 'scissor':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        elif choice1 == 'scissor':
+            if choice2 == 'paper':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        else:
+            if choice2 == 'rock':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        socketio.emit('result', {'result':result}, room=data['room_id'])
+        choice['choice1'] = ''
+        choice['choice2'] = ''
+
+@socketio.on('player2_choice')
+def player2_choice(data):
+    choice['choice2'] = data['choice']
+    choice1 = choice['choice1']
+    choice2 = choice['choice2']
+    if choice1 != '':
+        if choice1 == choice2:
+            result = 'TIE'
+        elif choice1 == 'rock':
+            if choice2 == 'scissor':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        elif choice1 == 'scissor':
+            if choice2 == 'paper':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        else:
+            if choice2 == 'rock':
+                result = 'player1_win'
+            else:
+                result = 'player2_win'
+        socketio.emit('result', {'result':result}, room=data['room_id'])
+        choice['choice1'] = ''
+        choice['choice2'] = ''
 
 #########################################################################################
 
