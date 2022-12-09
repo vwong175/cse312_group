@@ -170,6 +170,9 @@ def player1_choice(data):
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
+    else:
+        socketio.emit('wait', {'person_waiting':data['player1']}, room=data['room_id'])
+
 
 @socketio.on('player2_choice')
 def player2_choice(data):
@@ -203,6 +206,8 @@ def player2_choice(data):
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
+    else:
+        socketio.emit('wait', {'person_waiting':data['player2']}, room=data['room_id'])
 
 #########################################################################################
 

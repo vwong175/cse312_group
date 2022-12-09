@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('user2_joined', data => {
         showpage(data);
     })
-     
+    
+    socket.on('wait', data =>{
+        document.getElementById("message").innerHTML = data['person_waiting'] + " is waiting...";
+    })
+    
     socket.on('result', data => {
         if (data['result'] === 'TIE'){
             document.getElementById("message").innerHTML = "It's a tie!";
