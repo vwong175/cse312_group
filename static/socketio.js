@@ -20,10 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("message").innerHTML = "It's a tie!";
         }else{
             if (data['result'] === 'player1_win'){
-                document.getElementById("message").innerHTML = "player1_win";
+                winner = document.getElementsByClassName("name1")[0].innerHTML
+                document.getElementById("message").innerHTML = winner + " won!";
                 document.getElementById("player1_score").innerHTML = parseInt(document.getElementById("player1_score").innerHTML) + 1
             }else{
-                document.getElementById("message").innerHTML = "player2_win";
+                winner = document.getElementsByClassName("name2")[0].innerHTML
+                document.getElementById("message").innerHTML = winner + " won!";
                 document.getElementById("player2_score").innerHTML = parseInt(document.getElementById("player2_score").innerHTML) + 1
 
             }
@@ -44,9 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('join_game', {"username": username, 'room_id': roomid});
     }
 
-    document.querySelector("#leave_room_btn").onclick = () => {
-
-    }
 
     document.querySelector('#rock').onclick = () => {
         let choice_number;
