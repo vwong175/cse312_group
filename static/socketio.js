@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector("#join_room_btn").onclick = () => {
         id = document.querySelector('#room_id').value;     
-        socket.emit('join_Game', {"username": username, 'room_id': id})
+        socket.emit('join_game', {"username": username, 'room_id': id})
     }
     // Request to join a room
     function showpage(data){
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
         document.getElementsByClassName("action")[0].style.visibility = "visibile";
-        document.getElementsByClassName("player1")[0].innerHTML = data['user1'];
-        document.getElementsByClassName("player2")[0].innerHTML = data['user2'];
+        document.getElementsByClassName("name1")[0].innerHTML = data['user1'];
+        document.getElementsByClassName("name2")[0].innerHTML = data['user2'];
         document.getElementById("message").innerHTML =data['user2'] + "is here!";
     }
 });
