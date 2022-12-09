@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Have user in the waiting room
-    /*
-    socket.on('new_game', ()) =>{
-    }
-    */
+    socket.on('new_game', (data) => {
+        $("#room_id").html(data.room_id)
+    });
+    
     
     ////////////////////////////////////////////////
       // Joining and leaving rooms functionality //
