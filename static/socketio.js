@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
+
+    // Show the game only on user 1's page
+    socket.on('show_game_user_1', data => {
+        showGame()
+    })
     ///////////////////////////////////////////////
             // SENDING a websocket message //
     ///////////////////////////////////////////////
@@ -45,16 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('create_room', {"username": username});
         // Show the message div
         document.getElementById("message").style.visibility = "visible";
-
-        // TODO: Show the game page only until the other player joins
-        showGame()
     }
 
     document.querySelector("#join_room_btn").onclick = () => {
         roomid = document.querySelector('#room_id').value;     
         socket.emit('join_game', {"username": username, 'room_id': roomid});
-        // Show the game page
+        // Show the game page on user 2's page
         showGame()
+        socket.emit('show_game_user_1')
     }
 
 
