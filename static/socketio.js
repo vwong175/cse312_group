@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on("new_game", data => {
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
         document.getElementById("message").innerHTML ="Waiting for player 2,room ID is "+ data['room_id'];
-        roomID = data['room_id']
     })
 
     socket.on('user1_joined', data => {
@@ -47,9 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Request to join a room
     function showpage(data){
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
-        document.getElementsByClassName("action")[0].style.visibility = "visibile";
         document.getElementsByClassName("name1")[0].innerHTML = data['user1'];
         document.getElementsByClassName("name2")[0].innerHTML = data['user2'];
-        document.getElementById("message").innerHTML =data['user2'] + "is here!";
+        document.getElementById("message").innerHTML =data['user2'] + " is here!";
     }
 });

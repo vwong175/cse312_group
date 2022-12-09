@@ -136,6 +136,7 @@ def create_room(data):
 @socketio.on('join_game')
 def join_game(data):
     join_room(data['room_id'])
+    print(players)
     socketio.emit('user2_joined', {'user2': data['username'],'user1':players[data['room_id']]}, room=data['room_id'])
     socketio.emit('user1_joined', {'user2': players[data['room_id']], 'user1':data['username']})
 
