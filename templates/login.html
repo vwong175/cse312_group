@@ -5,15 +5,6 @@
 
 {% block content %}
 <body>
-    <!-- flash messages citation: https://www.youtube.com/watch?v=DFCKWhoiHZ4 -->
-    <!--{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <h3> {{ message }} </h3>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    -->
     <form class="form-signin", method="POST", action="{{url_for('login_page')}}">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 

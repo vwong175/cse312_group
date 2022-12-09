@@ -26,5 +26,5 @@ class JoinRoom(FlaskForm):
     submit = SubmitField('Join Room')
 
 class editUserForm(FlaskForm):
-    newUsername = StringField('newUsername', validators=[DataRequired(message="A username is required"), Length(min=2, max=20)])
+    newUsername = StringField('New Username', validators=[DataRequired(message="A username is required"), Length(min=2, max=20)])
     submit = SubmitField('Edit Username')

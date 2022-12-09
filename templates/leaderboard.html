@@ -12,8 +12,8 @@
     <tbody>
       {% for person in boards %}
         <tr>
-          <td>{{ person.rank + 1 }}</td>
-          <td>{{ person.username }}</td>
+          <td>{{ loop.index }}</td>
+          <td><a href="{{ url_for('profile_page', username =person.username ) }}" > {{ person.username }} </a></td>
           <td>{{ person.wins }}</td>
         </tr>
       {% endfor %}

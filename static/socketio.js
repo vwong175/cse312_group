@@ -1,17 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    let roomID;
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port, {transports: ['websocket']});
 
-    socket.on('connect', () =>{
-        console.log(`The socket instance id is: ${socket.id}`)
-        console.log("socket is connected on the client side")
-        socket.send("I am connected!");
-    });
+    socket.on("new_game", data => {
+        document.getElementsByClassName("row")[0].style.visibility = "hidden";
+        document.getElementById("message").innerHTML ="Waiting for player 2,room ID is "+ data['room_id'];
+        roomID = data['room_id']
+    })
 
-    socket.on('disconnect', () =>{
-        socket.send(`The socket with id ${socket.id} disconnected`)
-    });
+    socket.on('user1_joined', data => {
+        showpage(data);
+    })
+
+    socket.on('user2_joined', data => {
+        showpage(data);
+    })
      
     ////////////////////////////////////////////////
       // Joining and leaving rooms functionality //
@@ -32,22 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Request to create a room
     document.querySelector("#create_room_btn").onclick = () => {
+        
         socket.emit('create_room', {"username": username});
-        console.log("Emitted the message")
     }
 
+    document.querySelector("#join_room_btn").onclick = () => {
+        id = document.querySelector('#room_id').value;     
+        socket.emit('join_Game', {"username": username, 'room_id': id})
+    }
     // Request to join a room
-    document.querySelectorAll('.select-room').forEach(p => {
-        p.onclick = () => {
-            let newRoom = p.innerHTML;
-            if (newRoom == room){
-                msg = `You are already in the ${room} room`
-                printSysMsg(msg);
-            } else {
-                leaveRoom(room);
-                joinRoom(newRoom);
-                room = newRoom;
-            }
-        }
-    })
+    function showpage(data){
+        document.getElementsByClassName("row")[0].style.visibility = "hidden";
+        document.getElementsByClassName("action")[0].style.visibility = "visibile";
+        document.getElementsByClassName("player1")[0].innerHTML = data['user1'];
+        document.getElementsByClassName("player2")[0].innerHTML = data['user2'];
+        document.getElementById("message").innerHTML =data['user2'] + "is here!";
+    }
 });

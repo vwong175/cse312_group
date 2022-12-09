@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
-
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock css %}
 {% block content %}
 <body>
-  
-  <li><a href="{{url_for('profile_page', username=user.username )}}">Profile</a></li>
 
   <h1> Welcome {{ username }} !</h1>
   <div> Here is some information about {{ user.username }}. </div>
@@ -11,22 +11,15 @@
   <div>Won games: {{ user.wins }}</div>
   <div>Current rank: {{ rank }}</div>
 
-  <form action="/profile/signout" method="GET">
-    <input type="submit" class="btn btn-outline-secondary" value="Sign out">
-  </form>
-
-  <form action="{{url_for('leaderboard_page') }}" method="GET">
-    <input type="submit" class="btn btn-outline-secondary" value="Check leader board">
-  </form>
-
-
-  <form action="{{url_for('profile_page', username=user.username)}}", method="POST">
-      <!-- <input type="text", name="newUsername", placeholder="New Username", required, class="form-field"> -->
-      {{ form.newUsername.label(class="form-label") }}
-      {{ form.newUsername(class="form-control") }}
-      <br><br>
-      {{ form.submit(class="btn btn-dark") }}
-  </form>
+  {% if user.username == username %}
+    <form class="form-signin" action="{{url_for('profile_page', username=user.username)}}", method="POST">
+        <!-- <input type="text", name="newUsername", placeholder="New Username", required, class="form-field"> -->
+        {{ form.newUsername.label(class="form-label") }}
+        {{ form.newUsername(class="form-control") }}
+        <br>
+        {{ form.submit(class="btn btn-dark") }}
+    </form>
+  {% endif %}
 
 </body>
 {% endblock content%}

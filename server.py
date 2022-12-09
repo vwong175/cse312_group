@@ -7,7 +7,6 @@ import string
 
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 
-
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app, cors_allowed_origins='*')
@@ -21,7 +20,6 @@ choice2 = ""
 # Creates a random string in capital letters of length len
 def create_random_string(len: int) -> str:
     return ''.join(random.choices(string.ascii_uppercase, k=len))
-
 
 # root: login page
 @app.route('/', methods=["POST", "GET"])
@@ -93,7 +91,7 @@ def profile_page(username):
     user = users.find_one({"username": username})
     user_board = users.find({}).sort("wins", -1)
     sorted_user_board = [user for user in user_board]
-    user_rank = sorted_user_board.index(user)
+    user_rank = sorted_user_board.index(user) + 1
     if user:
         editUsernameForm = editUserForm()
         return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank=user_rank)
@@ -128,20 +126,18 @@ def leaderboard_page():
 
 # WEBSOCKET ROUTES
 
-@app.route('/create_room', methods=["POST"])
-def enter_waiting_room():
-    return redirect(url_for("waiting_page"))
-
 @socketio.on('create_room')
 def create_room(data):
-    print(f"The received data is: {data}")
     room_code = create_random_string(len = 4)
-    print(f"The room code is: {room_code}")
     join_room(room_code)
     players[room_code] = data["username"]
     socketio.emit('new_game', {'room_id': room_code})
-    print(f"The items in players is: {players.items()}")
-    print(f"The room {room_code} has been created ")
+
+@socketio.on('join_game')
+def join_game(data):
+    join_room(data['room_id'])
+    socketio.emit('user2_joined', {'user2': data['username'],'user1':players[data['room_id']]}, room=data['room_id'])
+    socketio.emit('user1_joined', {'user2': players[data['room_id']], 'user1':data['username']})
 
 #TODO
 @socketio.on('join')
@@ -157,5 +153,5 @@ def leave(data):
 #########################################################################################
 
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=8080, debug=True)
+    #app.run(host="0.0.0.0", port=8080, debug=True)
     socketio.run(app, host="0.0.0.0", port=8080, debug=True, allow_unsafe_werkzeug=True)
