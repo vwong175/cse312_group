@@ -131,25 +131,15 @@ def create_room(data):
     room_code = create_random_string(len = 4)
     join_room(room_code)
     players[room_code] = data["username"]
-    socketio.emit('new_game', {'room_id': room_code})
+    socketio.emit('new_game', {'room_id': room_code}, room=room_code)
 
 @socketio.on('join_game')
 def join_game(data):
+
     join_room(data['room_id'])
-    print(players)
-    socketio.emit('user2_joined', {'user2': data['username'],'user1':players[data['room_id']]}, room=data['room_id'])
+
+    socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
     socketio.emit('user1_joined', {'user2': players[data['room_id']], 'user1':data['username']})
-
-#TODO
-@socketio.on('join')
-def create_game(data):
-    join_room(data['room'])
-    send({'msg': data['username'] + " has joined the " + data["room"] + " room"}, to=data["room"]) #because we are using send, this will be sent to the "messages" event bucket on the client side
-
-@socketio.on("leave")
-def leave(data):
-    leave_room(data["room"])
-    send({'msg': data["username"] + " has left the " + data["room"] + " room"}, to=data["room"])
 
 #########################################################################################
 

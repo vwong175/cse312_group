@@ -16,26 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showpage(data);
     })
      
-    ////////////////////////////////////////////////
-      // Joining and leaving rooms functionality //
-    ////////////////////////////////////////////////
-    // Join room functionality
-    function joinRoom(){
-        socket.emit('join', {'username': username});
-    }
-
-    // Leave room functionality
-    function leaveRoom(room){
-        socket.emit('leave', {'username': username, "room": room});
-    }
-
     ///////////////////////////////////////////////
             // SENDING a websocket message //
     ///////////////////////////////////////////////
 
     // Request to create a room
     document.querySelector("#create_room_btn").onclick = () => {
-        
         socket.emit('create_room', {"username": username});
     }
 
