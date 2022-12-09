@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }else{
             choice_number = "player2_choice";
         }
-        socket.emit(choice_number, {'choice':'rock', 'room_id':roomid})
+        socket.emit(choice_number, {'player1':document.getElementsByClassName("name1")[0].innerHTML,'player2':document.getElementsByClassName('name2')[0].innerHTML,'choice':'rock', 'room_id':roomid})
     }
 
     document.querySelector('#paper').onclick = () => {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }else{
             choice_number = "player2_choice";
         }
-        socket.emit(choice_number, {'choice':'paper', 'room_id':roomid})
+        socket.emit(choice_number, {'player1':document.getElementsByClassName("name1")[0].innerHTML,'player2':document.getElementsByClassName('name2')[0].innerHTML,'choice':'paper', 'room_id':roomid})
     }
 
     document.querySelector('#scissor').onclick = () => {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }else{
             choice_number = "player2_choice";
         }
-        socket.emit(choice_number, {'choice':'scissor', 'room_id':roomid})
+        socket.emit(choice_number, {'player1':document.getElementsByClassName("name1")[0].innerHTML,'player2':document.getElementsByClassName('name2')[0].innerHTML,'choice':'scissor', 'room_id':roomid})
     }
 
     // Request to join a room
