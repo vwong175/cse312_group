@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('join_game', {"username": username, 'room_id': roomid});
     }
 
+    document.querySelector("#leave_room_btn").onclick = () => {
+
+    }
+
     document.querySelector('#rock').onclick = () => {
         let choice_number;
         if (player1 === true){
