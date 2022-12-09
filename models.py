@@ -48,7 +48,8 @@ class User:
             flash("password are not matched")
             return redirect(url_for('signup_page'))
 
-        # TODO - Most definetly want to take a look at this one more time
+
+        #TODO - Most definetly want to take a look at this one more time
         users.insert_one(user)
         print(list(users.find()))
         return redirect(url_for('login_page'))
