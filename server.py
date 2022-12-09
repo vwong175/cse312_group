@@ -161,6 +161,12 @@ def player1_choice(data):
                 result = 'player1_win'
             else:
                 result = 'player2_win'
+        if result == 'player1_win':
+            user_wins =  users.find_one({"username": data['player1']})['wins']
+            users.find_one_and_update({"username": data['player1']}, {"$set": {'wins': user_wins + 1}})
+        elif result == 'player2_win':
+            user_wins =  users.find_one({"username": data['player2']})['wins']
+            users.find_one_and_update({"username": data['player2']}, {"$set": {'wins': user_wins + 1}})
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
@@ -188,6 +194,12 @@ def player2_choice(data):
                 result = 'player1_win'
             else:
                 result = 'player2_win'
+        if result == 'player1_win':
+            user_wins =  users.find_one({"username": data['player1']})['wins']
+            users.find_one_and_update({"username": data['player1']}, {"$set": {'wins': user_wins + 1}})
+        elif result == 'player2_win':
+            user_wins =  users.find_one({"username": data['player2']})['wins']
+            users.find_one_and_update({"username": data['player2']}, {"$set": {'wins': user_wins + 1}})
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
