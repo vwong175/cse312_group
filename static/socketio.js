@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Hide the game page and the controls the momment the user enters the lobby
+    hideGame();
+
     let roomid;
     let player1 = false;
     // Connect to websocket
@@ -35,6 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
+
+    // Show the game only on user 1's page
+    socket.on('show_game_user_1', data => {
+        showGame()
+    })
     ///////////////////////////////////////////////
             // SENDING a websocket message //
     ///////////////////////////////////////////////
@@ -43,11 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector("#create_room_btn").onclick = () => {
         player1 = true;
         socket.emit('create_room', {"username": username});
+        // Show the message div
+        document.getElementById("message").style.visibility = "visible";
     }
 
     document.querySelector("#join_room_btn").onclick = () => {
         roomid = document.querySelector('#room_id').value;     
         socket.emit('join_game', {"username": username, 'room_id': roomid});
+        // Show the game page on user 2's page
+        showGame()
+        socket.emit('show_game_user_1')
     }
 
 
@@ -89,4 +103,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementsByClassName("name2")[0].innerHTML = data['user2'];
         document.getElementById("message").innerHTML = data['user2'] +" and " + data['user1'] + " is here!";
     }
+
+    // When the user enters the lobby
+    function hideGame(){
+        document.getElementsByClassName("leaderboard")[0].style.visibility = "hidden";
+        document.getElementsByClassName("controls")[0].style.visibility = "hidden";
+        document.getElementById("message").style.visibility = "hidden";
+    }
+
+    function showGame(){
+        document.getElementsByClassName("leaderboard")[0].style.visibility = "visible";
+        document.getElementsByClassName("controls")[0].style.visibility = "visible";
+        document.getElementById("message").style.visibility = "visible";
+    }
+
 });

@@ -4,9 +4,8 @@ from database import users
 from forms import *
 import random
 import string
-
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
-
+import html
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
 socketio = SocketIO(app, cors_allowed_origins='*')
@@ -43,7 +42,7 @@ def signup_page():
 def lobby_page():
     if "username" in session:
         join_room_form = JoinRoom()
-        return render_template('lobby.html', form=join_room_form, username=session["username"])
+        return render_template('lobby.html', form=join_room_form, username= html.escape(session["username"]))
     else:
         return redirect(url_for("login_page"))
 
@@ -55,14 +54,14 @@ def waiting_page():
     for room in players:
         if players[room] == username:
             room_id = room
-    return render_template("waiting_room.html", username = username, room_id = room_id)
+    return render_template("waiting_room.html", username = html.escape(username), room_id = room_id)
 
 # game page
 @app.route('/game/')
 def home_page():
     if session.get("userid") != None:
-        user = users.find_one({"_id": session.get("userid")})
-        return render_template('game.html', user=user)
+        username = users.find_one({"_id": session.get("userid")})['username']
+        return render_template('game.html', username= html.escape(username))
     else:
         return render_template('game.html')
 
@@ -93,7 +92,7 @@ def profile_page(username):
     user_rank = sorted_user_board.index(user) + 1
     if user:
         editUsernameForm = editUserForm()
-        return render_template('profile.html', form=editUsernameForm, user=user, username=session.get('username') , rank=user_rank)
+        return render_template('profile.html', form=editUsernameForm, user=user, username= html.escape(session.get('username')) , rank=user_rank)
     else:
         return jsonify({"failed": "User can not be found"}), 401
 
@@ -105,10 +104,13 @@ def edit_username(username):
     newUsername = request.form.get('newUsername')
 
     is_avialable_name = users.find_one({"username": newUsername}) == None
-    if is_avialable_name == False:
-        flash("Username address already in use")
+    is_valid_name = '/' not in newUsername
+    if not is_avialable_name:
+        flash("Username already in use")
         return redirect('/profile/'+session.get("username"))
- 
+    if not is_valid_name:
+        flash("Username cannot contain '/' !")
+        return redirect('/profile/'+session.get("username"))
     users.find_one_and_update({"username": session.get("username")}, {"$set": {'username': newUsername}})
     session["username"] = newUsername
     return redirect('/profile/'+newUsername)
@@ -136,6 +138,10 @@ def create_room(data):
 def join_game(data):
     join_room(data['room_id'])
     socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
+
+@socketio.on('show_game_user_1')
+def show_game_user_1():
+    socketio.emit('show_game_user_1')
 
 @socketio.on('player1_choice')
 def player1_choice(data):
