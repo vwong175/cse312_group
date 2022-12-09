@@ -13,6 +13,12 @@ class User:
 
     def signup(self):
         salt = bcrypt.gensalt()
+
+        #Usernames that contain '/' causes a bug, need to add a check for that
+        is_valid_username = '/' not in request.form.get('username')
+        if not is_valid_username:
+            flash("Usernames cannot contain '/' !")
+            return redirect(url_for('signup_page'))
         # Create the user object
         user = {
             "_id": uuid.uuid4().hex,
@@ -23,6 +29,7 @@ class User:
             "wins": 0,
             "played": 0
         }
+
 
         if len(list(users.find({}))) > 0:
             is_avialable_email = users.find_one({"email": user['email']}) == None
