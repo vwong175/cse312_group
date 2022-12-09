@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 {% block content %}
-    <h1>Lobby</h1>
-
+    <div class="header">
+      <h1>Lobby</h1>
+    </div>
     <div class="row">
         <div class="col-md-6">
           <h2>Create a game</h2>
@@ -22,14 +23,14 @@
             <h4 class="name1">
                 Player1 :
             </h4>
-            <span>0</span>
+            <span id="player1_score">0</span>
 
         </div>
         <div class="player2">
             <h4 class="name2">
                 Player2:
             </h4>
-            <span>0</span>
+            <span id="player2_score">0</span>
         </div>
       </div>
       <div class="controls">

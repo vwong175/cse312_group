@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on("new_game", data => {
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
+        document.getElementsByClassName("header")[0].style.visibility = "hidden";
         document.getElementById("message").innerHTML ="Waiting for player 2,room ID is "+ data['room_id'];
         roomid = data['room_id']
     })
@@ -20,8 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }else{
             if (data['result'] === 'player1_win'){
                 document.getElementById("message").innerHTML = "player1_win";
+                document.getElementById("player1_score").innerHTML = parseInt(document.getElementById("player1_score").innerHTML) + 1
             }else{
                 document.getElementById("message").innerHTML = "player2_win";
+                document.getElementById("player2_score").innerHTML = parseInt(document.getElementById("player2_score").innerHTML) + 1
 
             }
         }
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Request to join a room
     function showpage(data){
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
+        document.getElementsByClassName("header")[0].style.visibility = "hidden";
         document.getElementsByClassName("name1")[0].innerHTML = data['user1'];
         document.getElementsByClassName("name2")[0].innerHTML = data['user2'];
         document.getElementById("message").innerHTML = data['user2'] +" and " + data['user1'] + " is here!";
