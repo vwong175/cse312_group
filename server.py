@@ -4,7 +4,7 @@ from database import users
 from forms import *
 import random
 import string
-from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask_socketio import SocketIO, emit, send, join_room, leave_room, close_room
 import html
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
@@ -118,7 +118,6 @@ def edit_username(username):
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
-    # board = list(rank.find())
     user_board = users.find({}).sort("wins", -1)
     return render_template('leaderboard.html', boards=user_board, title="Leaderboard")
 
@@ -138,6 +137,13 @@ def create_room(data):
 def join_game(data):
     join_room(data['room_id'])
     socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
+
+@socketio.on('leave_game')
+def leave_game(data):
+    room_code = data["room_id"]
+    socketio.emit('user_left', {'username': data["username"], "room_id": data["room_id"]}, room=data["room_id"])
+    del players[room_code]
+    leave_room(room_code)
 
 @socketio.on('show_game_user_1')
 def show_game_user_1():
