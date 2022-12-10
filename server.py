@@ -4,7 +4,7 @@ from database import users
 from forms import *
 import random
 import string
-from flask_socketio import SocketIO, emit, send, join_room, leave_room, close_room
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 import html
 app = Flask(__name__)
 app.secret_key = b'cse312 group project secret key' #TODO: Make an env file, store secret key in there and read secret key there 
@@ -99,6 +99,7 @@ def edit_username(username):
 # leaderboard page
 @app.route('/leaderboard/')
 def leaderboard_page():
+    # board = list(rank.find())
     user_board = users.find({}).sort("wins", -1)
     return render_template('leaderboard.html', boards=user_board, title="Leaderboard")
 
