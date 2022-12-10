@@ -52,11 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showGame()
     })
 
-    // By getting user_left response from server, our user has left the room and we can redirect them back to the lobby
-    socket.on('user_left', data => {
-        window.location.reload()
-        // socket.emit('remove_room', {"room_id": data["room_id"]});
-    })
+
     ///////////////////////////////////////////////
             // SENDING a websocket message //
     ///////////////////////////////////////////////
@@ -111,11 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit(choice_number, {'player1':document.getElementsByClassName("name1")[0].innerHTML,'player2':document.getElementsByClassName('name2')[0].innerHTML,'choice':'scissor', 'room_id':roomid})
     }
 
-    document.querySelector('#leave').onclick = () => {
-        socket.emit('leave_game', {"username": username, "room_id": roomid});
-        window.location.reload() // Force a reload of the page, ie go back to the lobby
-    }
-
     // Request to join a room
     function showpage(data){
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
@@ -131,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementsByClassName("controls")[0].style.visibility = "hidden";
         document.getElementsByClassName("Leave")[0].style.visibility = "hidden";
         document.getElementById("message").style.visibility = "hidden";
-        document.getElementById("leave").style.visibility = "hidden";
     }
 
     function showGame(){
@@ -139,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementsByClassName("controls")[0].style.visibility = "visible";
         document.getElementsByClassName("Leave")[0].style.visibility = "visible";
         document.getElementById("message").style.visibility = "visible";
-        document.getElementById("leave").style.visibility = "visible";
     }
 
 });
