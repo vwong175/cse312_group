@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on("new_game", data => {
         document.getElementsByClassName("row")[0].style.visibility = "hidden";
         document.getElementsByClassName("header")[0].style.visibility = "hidden";
-        document.getElementById("message").innerHTML ="Waiting for player 2,room ID is "+ data['room_id'];
+        document.getElementById("message").innerHTML ="Waiting for player 2, room ID is "+ data['room_id'];
         roomid = data['room_id']
     })
 
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('leave', data => {
+        clearScores();
         document.getElementsByClassName("row")[0].style.visibility = "visible";
         document.getElementsByClassName("header")[0].style.visibility = "visible";
         hideGame();
@@ -126,6 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementsByClassName("controls")[0].style.visibility = "visible";
         document.getElementsByClassName("Leave")[0].style.visibility = "visible";
         document.getElementById("message").style.visibility = "visible";
+    }
+
+    function clearScores(){
+        document.getElementById("player2_score").innerHTML = "0"
+        document.getElementById("player1_score").innerHTML = "0"
     }
 
 });
