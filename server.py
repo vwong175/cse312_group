@@ -45,26 +45,7 @@ def lobby_page():
         return render_template('lobby.html', form=join_room_form, username= html.escape(session["username"]))
     else:
         return redirect(url_for("login_page"))
-
-# TODO
-# Waiting for another player page
-@app.route("/waiting_room/", methods=["GET"])
-def waiting_page():
-    username = session["username"]
-    for room in players:
-        if players[room] == username:
-            room_id = room
-    return render_template("waiting_room.html", username = html.escape(username), room_id = room_id)
-
-# game page
-@app.route('/game/')
-def home_page():
-    if session.get("userid") != None:
-        username = users.find_one({"_id": session.get("userid")})['username']
-        return render_template('game.html', username= html.escape(username))
-    else:
-        return render_template('game.html')
-
+        
 # about page
 @app.route("/about/")
 def about_page():
