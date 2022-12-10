@@ -71,9 +71,12 @@ def profile_page(username):
     user_board = users.find({}).sort("wins", -1)
     sorted_user_board = [user for user in user_board]
     user_rank = sorted_user_board.index(user) + 1
-    if user:
+    if user and 'username' in session:
         editUsernameForm = editUserForm()
         return render_template('profile.html', form=editUsernameForm, user=user, username= html.escape(session.get('username')) , rank=user_rank)
+    elif user and 'username' not in session:
+        editUsernameForm = editUserForm()
+        return render_template('profile.html', form=editUsernameForm, user=user, username= "" , rank=user_rank)
     else:
         return jsonify({"failed": "User can not be found"}), 401
 
