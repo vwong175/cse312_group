@@ -45,26 +45,7 @@ def lobby_page():
         return render_template('lobby.html', form=join_room_form, username= html.escape(session["username"]))
     else:
         return redirect(url_for("login_page"))
-
-# TODO
-# Waiting for another player page
-@app.route("/waiting_room/", methods=["GET"])
-def waiting_page():
-    username = session["username"]
-    for room in players:
-        if players[room] == username:
-            room_id = room
-    return render_template("waiting_room.html", username = html.escape(username), room_id = room_id)
-
-# game page
-@app.route('/game/')
-def home_page():
-    if session.get("userid") != None:
-        username = users.find_one({"_id": session.get("userid")})['username']
-        return render_template('game.html', username= html.escape(username))
-    else:
-        return render_template('game.html')
-
+        
 # about page
 @app.route("/about/")
 def about_page():
@@ -138,12 +119,10 @@ def join_game(data):
     join_room(data['room_id'])
     socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
 
-@socketio.on('leave_game')
+@socketio.on('leave_room')
 def leave_game(data):
-    room_code = data["room_id"]
-    socketio.emit('user_left', {'username': data["username"], "room_id": data["room_id"]}, room=data["room_id"])
-    del players[room_code]
-    leave_room(room_code)
+    socketio.emit('leave',{'username':data['username']}, room=data['room_id'])
+    leave_room(data['room_id'])
 
 @socketio.on('show_game_user_1')
 def show_game_user_1():
@@ -182,6 +161,9 @@ def player1_choice(data):
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
+    else:
+        socketio.emit('wait', {'person_waiting':data['player1']}, room=data['room_id'])
+
 
 @socketio.on('player2_choice')
 def player2_choice(data):
@@ -215,6 +197,8 @@ def player2_choice(data):
         socketio.emit('result', {'result':result}, room=data['room_id'])
         choice['choice1'] = ''
         choice['choice2'] = ''
+    else:
+        socketio.emit('wait', {'person_waiting':data['player2']}, room=data['room_id'])
 
 #########################################################################################
 
