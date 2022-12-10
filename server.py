@@ -139,6 +139,11 @@ def join_game(data):
     join_room(data['room_id'])
     socketio.emit('user2_joined', {'user2': data['username'], 'user1':players[data['room_id']]}, room=data['room_id'])
 
+@socketio.on('leave_room')
+def leave_game(data):
+    socketio.emit('leave',{'username':data['username']}, room=data['room_id'])
+    leave_room(data['room_id'])
+
 @socketio.on('show_game_user_1')
 def show_game_user_1():
     socketio.emit('show_game_user_1')

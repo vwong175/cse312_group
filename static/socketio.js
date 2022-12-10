@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('wait', data =>{
         document.getElementById("message").innerHTML = data['person_waiting'] + " is waiting...";
     })
+
+    socket.on('leave', data => {
+        document.getElementsByClassName("row")[0].style.visibility = "visible";
+        document.getElementsByClassName("header")[0].style.visibility = "visible";
+        hideGame();
+    })
     
     socket.on('result', data => {
         if (data['result'] === 'TIE'){
@@ -64,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('show_game_user_1')
     }
 
+    document.querySelector('#leave_room_btn').onclick = () => {
+        socket.emit('leave_room', {'username':username, 'room_id': roomid})
+    }
 
     document.querySelector('#rock').onclick = () => {
         let choice_number;
@@ -108,12 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideGame(){
         document.getElementsByClassName("leaderboard")[0].style.visibility = "hidden";
         document.getElementsByClassName("controls")[0].style.visibility = "hidden";
+        document.getElementsByClassName("Leave")[0].style.visibility = "hidden";
         document.getElementById("message").style.visibility = "hidden";
     }
 
     function showGame(){
         document.getElementsByClassName("leaderboard")[0].style.visibility = "visible";
         document.getElementsByClassName("controls")[0].style.visibility = "visible";
+        document.getElementsByClassName("Leave")[0].style.visibility = "visible";
         document.getElementById("message").style.visibility = "visible";
     }
 
