@@ -1,6 +1,6 @@
-﻿# cse312_group
+# cse312_group
 
-Link to our site: http://54.221.252.1:8080/
+Link to our site: www.rokpepersizzors.me
 
 This repo has been updated to work with `Python v3.8` and up.
 
