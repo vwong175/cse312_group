@@ -19,7 +19,6 @@ class User:
         if not is_valid_username:
             flash("Usernames cannot contain '/' !")
             return redirect(url_for('signup_page'))
-
         # Create the user object
         user = {
             "_id": uuid.uuid4().hex,
@@ -49,7 +48,8 @@ class User:
             flash("password are not matched")
             return redirect(url_for('signup_page'))
 
-        # TODO - Most definetly want to take a look at this one more time
+
+        #TODO - Most definetly want to take a look at this one more time
         users.insert_one(user)
         print(list(users.find()))
         return redirect(url_for('login_page'))
